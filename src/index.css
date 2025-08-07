@@ -1,0 +1,40 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 全局主题样式 */
+body.light {
+  background-color: #ffffff;
+  color: #333333;
+}
+
+body.dark {
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+}
+
+body.blue {
+  background-color: #0a192f;
+  color: #ccd6f6;
+}
+
+body.green {
+  background-color: #f0fff0;
+  color: #2e7d32;
+}
+
+body.purple {
+  background-color: #f8f0fc;
+  color: #6a1b9a;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
