@@ -1,6 +1,7 @@
 # 原子Markdown编辑器
 # AtomicMarkDown
 [![star](https://gitee.com/honghutechnology/AtomicMarkDown/badge/star.svg?theme=dark)](https://gitee.com/honghutechnology/AtomicMarkDown/stargazers)
+
 ![GitHub Repo stars](https://gihub.com/honghutechnology/AtomicMarkDown/)
 ## 项目概述
 
@@ -231,10 +232,6 @@ server {
 - 禁用危险的Markdown特性
 - 限制文件上传类型
 
-## 故障排除
-
-### 常见问题
-
 #### 1. 构建失败
 ```bash
 # 清除缓存后重新安装
@@ -274,7 +271,7 @@ npm run build
 
 ## 许可证
 
-本项目采用 ISC 许可证，详见 [LICENSE](LICENSE) 文件。
+本项目采用Apache2.0许可证，详见 [LICENSE](LICENSE) 文件。
 
 ## 联系方式
 
