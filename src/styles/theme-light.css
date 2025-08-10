@@ -1,0 +1,8 @@
+/* theme-light.css - 亮色主题 */
+.app.light {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.app.light h1 {
+  color: #333;
+}

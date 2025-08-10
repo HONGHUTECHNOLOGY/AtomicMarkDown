@@ -12,7 +12,7 @@ export const Preview = ({ markdown, theme }) => {
   useEffect(() => {
     mermaid.initialize({
       startOnLoad: false,
-      theme: theme === 'dark' ? 'dark' : 'default',
+      theme: theme === 'dark' || theme === 'blue' ? 'dark' : 'default',
       securityLevel: 'loose',
       fontFamily: 'inherit',
     });

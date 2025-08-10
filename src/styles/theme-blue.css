@@ -1,0 +1,46 @@
+/* theme-blue.css - 蓝色主题 */
+.app.blue {
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+}
+
+.blue .header {
+  background-color: rgba(30, 30, 30, 0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.blue h1,
+.blue .toolbar button {
+  color: #e0e0e0;
+}
+
+.blue .toolbar {
+  background-color: rgba(30, 30, 30, 0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.blue .toolbar button {
+  background-color: rgba(50, 50, 50, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.blue .toolbar button:hover {
+  background-color: rgba(70, 70, 70, 0.9);
+}
+
+.blue .editor,
+.blue .preview {
+  background-color: rgba(30, 30, 30, 0.9);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.blue ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.blue ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.blue ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}

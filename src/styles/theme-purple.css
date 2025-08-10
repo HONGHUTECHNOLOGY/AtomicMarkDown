@@ -1,0 +1,65 @@
+/* theme-purple.css - 紫色主题 */
+.app.purple {
+  background: linear-gradient(135deg, #e8d5f2 0%, #f3e5f5 50%, #f8f0fc 100%);
+}
+
+.purple .header {
+  background-color: rgba(248, 240, 255, 0.9);
+  border-bottom: 1px solid rgba(156, 39, 176, 0.2);
+}
+
+.purple h1 {
+  color: #6a1b9a;
+}
+
+.purple .editor-container {
+  background-color: transparent;
+  box-shadow: 0 4px 20px rgba(156, 39, 176, 0.15);
+}
+
+.purple .editor {
+  background-color: rgba(252, 245, 255, 0.95) !important;
+  border-right: 1px solid rgba(156, 39, 176, 0.2);
+  color: #6a1b9a;
+}
+
+.purple .preview {
+  background-color: rgba(252, 245, 255, 0.95);
+  color: #6a1b9a;
+}
+
+.purple .toolbar {
+  background-color: rgba(248, 240, 255, 0.9);
+  border-bottom: 1px solid rgba(156, 39, 176, 0.2);
+}
+
+.purple .toolbar button {
+  background-color: rgba(240, 230, 255, 0.8);
+  border: 1px solid rgba(156, 39, 176, 0.3);
+  color: #4a148c;
+}
+
+.purple .toolbar button:hover {
+  background-color: rgba(230, 215, 255, 0.9);
+  border-color: rgba(156, 39, 176, 0.5);
+}
+
+.purple .theme-btn {
+  background-color: rgba(230, 215, 255, 0.3);
+}
+
+.purple .theme-btn.active {
+  background-color: rgba(156, 39, 176, 0.3);
+}
+
+.purple ::-webkit-scrollbar-track {
+  background: rgba(156, 39, 176, 0.1);
+}
+
+.purple ::-webkit-scrollbar-thumb {
+  background: rgba(156, 39, 176, 0.3);
+}
+
+.purple ::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 39, 176, 0.5);
+}

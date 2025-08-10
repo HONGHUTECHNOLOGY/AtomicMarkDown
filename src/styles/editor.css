@@ -1,0 +1,29 @@
+/* 编辑器和预览区样式 */
+.editor,
+.preview {
+  flex: 1;
+  overflow: auto;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  margin: 0.5rem;
+}
+
+.editor {
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.dark .editor,
+.blue .editor,
+.purple .editor {
+  background-color: rgba(30, 30, 30, 0.9);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.green .editor {
+  background-color: rgba(245, 255, 245, 0.9);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+
