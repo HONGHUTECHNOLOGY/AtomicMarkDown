@@ -1,8 +1,7 @@
 # 原子Markdown编辑器
 # AtomicMarkDown
-<a href='https://gitee.com/honghutechnology/AtomicMarkDown/stargazers'><img src='https://gitee.com/honghutechnology/AtomicMarkDown/badge/star.svg?theme=dark' alt='star'></img></a>
+[![star](https://gitee.com/honghutechnology/AtomicMarkDown/badge/star.svg?theme=dark)](https://gitee.com/honghutechnology/AtomicMarkDown/stargazers)
 
-![GitHub Repo stars](https://gihub.com/honghutechnology/AtomicMarkDown)
 ## 项目概述
 
 原子Markdown编辑器是由鸿鹄科技开发的，基于React开发的现代化在线Markdown编辑器，提供了强大的编辑功能、实时预览、多主题支持和多种导出格式。该项目采用最新的前端技术栈，为用户提供流畅、高效的Markdown编辑体验。
@@ -87,7 +86,15 @@ atomicmarkdown/
 │   │   ├── Editor.js           # 编辑器组件
 │   │   ├── Preview.js          # 预览组件
 │   │   └── Toolbar.js          # 工具栏组件
-│   ├── App.css                 # 应用样式
+│   ├── styles/
+│   │   ├── App-base.css        # 基础布局样式
+│   │   ├── chart-styles.css    # 图表功能样式
+│   │   ├── export-styles.css   # 导出功能样式
+│   │   ├── theme-blue.css      # 蓝色主题样式
+│   │   ├── theme-dark.css      # 深色主题样式
+│   │   ├── theme-green.css     # 绿色主题样式
+│   │   ├── theme-light.css     # 浅色主题样式
+│   │   └── theme-purple.css    # 紫色主题样式
 │   ├── App.js                  # 主应用组件
 │   ├── index.css               # 全局样式
 │   └── index.js                # 入口文件
