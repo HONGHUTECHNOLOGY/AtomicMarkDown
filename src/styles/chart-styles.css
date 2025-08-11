@@ -30,6 +30,7 @@
 .chart-container {
   position: relative;
   display: inline-block;
+  z-index: 10003; /* 确保容器z-index足够高 */
 }
 
 /* 图表按钮样式 */
@@ -60,7 +61,7 @@
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-  z-index: 1000;
+  z-index: 10003;
   min-width: 140px;
   margin-top: 4px;
   overflow: hidden;

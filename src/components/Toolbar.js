@@ -7,6 +7,8 @@ import DOMPurify from 'dompurify';
 export const Toolbar = ({ editorRef }) => {
   const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
   const [isChartMenuOpen, setIsChartMenuOpen] = useState(false);
+  // 添加工具栏展开/收起状态
+  const [isToolbarOpen, setIsToolbarOpen] = useState(true);
   const exportMenuRef = useRef(null);
   const chartMenuRef = useRef(null);
 
@@ -320,66 +322,88 @@ ${htmlContent}
   ];
 
   return (
-    <div className="toolbar">
-      <button onClick={() => insertAtCursor('# ')}>H1</button>
-      <button onClick={() => insertAtCursor('## ')}>H2</button>
-      <button onClick={() => insertAtCursor('### ')}>H3</button>
-      <button onClick={() => insertAtCursor('**加粗文本**')}>B</button>
-      <button onClick={() => insertAtCursor('*斜体文本*')}>I</button>
-      <button onClick={() => insertAtCursor('~~删除线文本~~')}>S</button>
-      <button onClick={() => insertAtCursor('> 引用文本\n')}>引用</button>
-      <button onClick={() => insertAtCursor('\n```\n代码块\n```\n')}>代码块</button>
-      <button onClick={() => insertAtCursor('\n---\n')}>分割线</button>
-      <button onClick={() => insertAtCursor('- 列表项\n')}>无序列表</button>
-      <button onClick={() => insertAtCursor('1. 列表项\n')}>有序列表</button>
-      <button onClick={insertTable}>表格</button>
+    <div className="toolbar-wrapper">
+      {/* 工具栏收起时显示的按钮 */}
+      <button 
+        className={`toolbar-show-button ${!isToolbarOpen ? 'show' : ''}`} 
+        onClick={() => setIsToolbarOpen(true)}
+      >
+        ▼
+      </button>
       
-      <div className="chart-container" ref={chartMenuRef}>
+      {/* 工具栏 */}
+      <div className={`toolbar ${isToolbarOpen ? 'open' : 'collapsed'}`}>
+        {/* 工具栏内容 */}
+        <div className="toolbar-content" style={{ display: isToolbarOpen ? 'flex' : 'none' }}>
+          <button onClick={() => insertAtCursor('# ')}>H1</button>
+          <button onClick={() => insertAtCursor('## ')}>H2</button>
+          <button onClick={() => insertAtCursor('### ')}>H3</button>
+          <button onClick={() => insertAtCursor('**加粗文本**')}>B</button>
+          <button onClick={() => insertAtCursor('*斜体文本*')}>I</button>
+          <button onClick={() => insertAtCursor('~~删除线文本~~')}>S</button>
+          <button onClick={() => insertAtCursor('> 引用文本\n')}>引用</button>
+          <button onClick={() => insertAtCursor('\n```\n代码块\n```\n')}>代码块</button>
+          <button onClick={() => insertAtCursor('\n---\n')}>分割线</button>
+          <button onClick={() => insertAtCursor('- 列表项\n')}>无序列表</button>
+          <button onClick={() => insertAtCursor('1. 列表项\n')}>有序列表</button>
+          <button onClick={insertTable}>表格</button>
+          
+          <div className="chart-container" ref={chartMenuRef}>
+            <button 
+              className="chart-btn" 
+              onClick={() => setIsChartMenuOpen(!isChartMenuOpen)}
+            >
+              图表 ▼
+            </button>
+            <ul className={`chart-dropdown ${isChartMenuOpen ? 'show' : ''}`}>
+              {chartOptions.map((option) => (
+                <li key={option.id}>
+                  <a 
+                    href="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      option.action();
+                    }}
+                  >
+                    {option.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          <div className="export-container" ref={exportMenuRef}>
+            <button 
+              className="export-btn" 
+              onClick={() => setIsExportMenuOpen(!isExportMenuOpen)}
+            >
+              导出 ▼
+            </button>
+            <ul className={`export-dropdown ${isExportMenuOpen ? 'show' : ''}`}>
+              {exportOptions.map((option) => (
+                <li key={option.id}>
+                  <a 
+                    href="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      option.action();
+                    }}
+                  >
+                    {option.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        
+        {/* 添加切换按钮 */}
         <button 
-          className="chart-btn" 
-          onClick={() => setIsChartMenuOpen(!isChartMenuOpen)}
+          className={`toolbar-toggle ${isToolbarOpen ? 'show' : ''}`} 
+          onClick={() => setIsToolbarOpen(false)}
         >
-          图表 ▼
+          ▲
         </button>
-        <ul className={`chart-dropdown ${isChartMenuOpen ? 'show' : ''}`}>
-          {chartOptions.map((option) => (
-            <li key={option.id}>
-              <a 
-                href="#" 
-                onClick={(e) => {
-                  e.preventDefault();
-                  option.action();
-                }}
-              >
-                {option.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-      
-      <div className="export-container" ref={exportMenuRef} style={{ marginLeft: 'auto' }}>
-        <button 
-          className="export-btn" 
-          onClick={() => setIsExportMenuOpen(!isExportMenuOpen)}
-        >
-          导出 ▼
-        </button>
-        <ul className={`export-dropdown ${isExportMenuOpen ? 'show' : ''}`}>
-          {exportOptions.map((option) => (
-            <li key={option.id}>
-              <a 
-                href="#" 
-                onClick={(e) => {
-                  e.preventDefault();
-                  option.action();
-                }}
-              >
-                {option.label}
-              </a>
-            </li>
-          ))}
-        </ul>
       </div>
     </div>
   );

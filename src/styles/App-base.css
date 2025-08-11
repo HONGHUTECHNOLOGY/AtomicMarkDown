@@ -16,6 +16,7 @@
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 10001; /* 添加z-index，确保标题栏在显示按钮之上 */
 }
 
 h1 {
@@ -79,21 +80,161 @@ h1 {
   border-right: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+/* 工具栏包装器 */
+.toolbar-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* 优化过渡效果，使用更丝滑的缓动函数 */
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10001; /* 提高z-index，确保工具栏在大部分元素之上 */
+  overflow: visible; /* 添加此行以确保下拉菜单能够正确显示 */
+}
+
+/* 工具栏显示按钮 */
+.toolbar-show-button {
+  padding: 0.2rem 0.5rem;
+  border: none;
+  background-color: rgba(102, 126, 234, 0.7);
+  color: white;
+  border-radius: 0 0 8px 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  width: 60px;
+  text-align: center;
+  margin: 0;
+  z-index: 10000; /* 保持z-index，但确保低于标题栏 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* 工具栏显示按钮出现时的状态 */
+.toolbar-show-button.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toolbar-show-button:hover {
+  background-color: rgba(102, 126, 234, 0.8);
+}
+
+/* 横向工具栏样式 */
 .toolbar {
   display: flex;
-  flex-wrap: wrap;
-  padding: 0.75rem;
+  flex-direction: row;
+  padding: 0;
   background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(5px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  z-index: 10001; /* 提高z-index，确保工具栏在大部分元素之上 */
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 95%;
+  max-width: 1200px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  /* 优化过渡效果，使用更丝滑的缓动函数 */
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  min-height: 40px;
+  /* 设置初始位置，为显示动画做准备 */
+  transform: translateY(-20px);
+  opacity: 0;
+}
+
+/* 工具栏展开状态 */
+.toolbar.open {
+  height: auto;
+  padding: 0.75rem;
+  overflow: visible; /* 改为visible，确保下拉菜单能够显示 */
+  opacity: 1;
+  /* 显示动画：向下浮现 */
+  transform: translateY(0);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 工具栏收起状态 */
+.toolbar.collapsed {
+  height: 0;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: none;
+  box-shadow: none;
+  margin-top: 0;
+  opacity: 0;
+  /* 隐藏动画：向上浮出 */
+  transform: translateY(-20px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 工具栏切换按钮 */
+.toolbar-toggle {
+  padding: 0.2rem 0.5rem;
+  border: none;
+  background-color: rgba(102, 126, 234, 0.7);
+  color: white;
+  border-radius: 0 0 8px 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 60px;
+  text-align: center;
+  margin: 0;
+  z-index: 9990; /* 降低z-index，确保在工具栏之下 */
+  opacity: 0;
+  /* 修复：合并transform属性，避免冲突 */
+  transform: translateX(-50%) translateY(10px);
+}
+
+/* 工具栏切换按钮出现时的状态 */
+.toolbar-toggle.show {
+  opacity: 1;
+  /* 修复：保持transform一致性 */
+  transform: translateX(-50%) translateY(0);
+}
+
+.toolbar-toggle:hover {
+  background-color: rgba(102, 126, 234, 0.8);
+}
+
+/* 工具栏内容 */
+.toolbar-content {
+  display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
-  margin: 0 1rem;
-  border-radius: 8px 8px 0 0;
-  z-index: 9999;
+  overflow: visible;
+  width: 100%;
+  align-items: center;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  /* 移除transform，改用margin实现动画 */
+  margin-top: -10px;
+  opacity: 0;
   position: relative;
 }
 
-.toolbar button {
+/* 工具栏展开时的内容状态 */
+.toolbar.open .toolbar-content {
+  margin-top: 0;
+  opacity: 1;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toolbar-content button {
   padding: 0.3rem 0.6rem;
   border: 1px solid rgba(0, 0, 0, 0.1);
   background-color: rgba(255, 255, 255, 0.7);
@@ -101,9 +242,11 @@ h1 {
   cursor: pointer;
   transition: all 0.2s ease;
   font-weight: 500;
+  /* 修复：添加最小高度以确保按钮高度一致 */
+  min-height: 32px;
 }
 
-.toolbar button:hover {
+.toolbar-content button:hover {
   background-color: rgba(220, 220, 220, 0.9);
   transform: translateY(-2px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);

@@ -63,3 +63,14 @@
 .purple ::-webkit-scrollbar-thumb:hover {
   background: rgba(156, 39, 176, 0.5);
 }
+
+/* 添加到文件末尾 */
+.purple .toolbar-show-button {
+  background: linear-gradient(135deg, rgba(156, 39, 176, 0.7), rgba(136, 14, 176, 0.7));
+  color: white;
+  border: none;
+}
+
+.purple .toolbar-show-button:hover {
+  background: linear-gradient(135deg, rgba(156, 39, 176, 0.8), rgba(136, 14, 176, 0.8));
+}

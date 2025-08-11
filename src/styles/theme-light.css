@@ -6,3 +6,14 @@
 .app.light h1 {
   color: #333;
 }
+
+/* 添加到文件末尾 */
+.light .toolbar-show-button {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.7), rgba(114, 93, 217, 0.7));
+  color: white;
+  border: none;
+}
+
+.light .toolbar-show-button:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.8), rgba(114, 93, 217, 0.8));
+}

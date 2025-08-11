@@ -44,3 +44,14 @@
 .blue ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
 }
+
+/* 添加到文件末尾 */
+.blue .toolbar-show-button {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.7), rgba(114, 93, 217, 0.7));
+  color: white;
+  border: none;
+}
+
+.blue .toolbar-show-button:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.8), rgba(114, 93, 217, 0.8));
+}

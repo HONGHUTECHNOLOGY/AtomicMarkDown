@@ -1,8 +1,8 @@
 # 原子Markdown编辑器
 # AtomicMarkDown
-[![star](https://gitee.com/honghutechnology/AtomicMarkDown/badge/star.svg?theme=dark)](https://gitee.com/honghutechnology/AtomicMarkDown/stargazers)
+<a href='https://gitee.com/honghutechnology/AtomicMarkDown/stargazers'><img src='https://gitee.com/honghutechnology/AtomicMarkDown/badge/star.svg?theme=dark' alt='star'></img></a>
 
-![GitHub Repo stars](https://gihub.com/honghutechnology/AtomicMarkDown/)
+![GitHub Repo stars](https://gihub.com/honghutechnology/AtomicMarkDown)
 ## 项目概述
 
 原子Markdown编辑器是由鸿鹄科技开发的，基于React开发的现代化在线Markdown编辑器，提供了强大的编辑功能、实时预览、多主题支持和多种导出格式。该项目采用最新的前端技术栈，为用户提供流畅、高效的Markdown编辑体验。
@@ -122,7 +122,7 @@ npm install
 npm start
 ```
 
-开发服务器将在 `http://localhost:3000` 启动，支持热重载。
+开发服务器将在 `http://localhost:80` 启动，支持热重载。
 
 #### 4. 构建生产版本
 ```bash
