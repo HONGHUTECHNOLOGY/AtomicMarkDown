@@ -138,7 +138,7 @@ graph TD
     insertAtCursor(tableTemplate);
   };
 
-  // 导出为PNG - 改进背景和分辨率
+  // 导出为PNG - 修复颜色和渲染区域问题
   const exportPNG = () => {
     setIsExportMenuOpen(false);
     const preview = document.querySelector('.preview');
@@ -147,29 +147,55 @@ graph TD
       return;
     }
     
-    // 临时调整样式以确保完整渲染
-    const originalStyle = {
-      overflow: preview.style.overflow,
-      height: preview.style.height,
-      maxHeight: preview.style.maxHeight
+    // 获取当前主题的实际背景色
+    const getThemeBackgroundColor = () => {
+      const body = document.body;
+      const computedStyle = window.getComputedStyle(body);
+      return computedStyle.backgroundColor || 
+             (body.classList.contains('dark') ? '#1e1e1e' : '#ffffff');
     };
     
-    preview.style.overflow = 'visible';
-    preview.style.height = 'auto';
-    preview.style.maxHeight = 'none';
+    // 获取当前主题的文字颜色
+    const getThemeTextColor = () => {
+      const previewEl = document.querySelector('.preview');
+      if (!previewEl) return '#333333';
+      const computedStyle = window.getComputedStyle(previewEl);
+      return computedStyle.color || '#333333';
+    };
     
-    // 等待DOM更新后截图
+    // 克隆预览区域以避免样式干扰
+    const clone = preview.cloneNode(true);
+    clone.style.cssText = `
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+      width: ${preview.scrollWidth}px;
+      min-height: ${preview.scrollHeight}px;
+      background-color: ${getThemeBackgroundColor()};
+      color: ${getThemeTextColor()};
+      padding: 20px;
+      box-sizing: border-box;
+      overflow: visible;
+    `;
+    
+    document.body.appendChild(clone);
+    
+    // 确保所有图片和样式都已加载
     setTimeout(() => {
-      html2canvas(preview, {
-        backgroundColor: document.body.classList.contains('dark') ? '#1e1e1e' : '#ffffff',
-        scale: 3,
+      html2canvas(clone, {
+        backgroundColor: getThemeBackgroundColor(),
+        scale: 2, // 降低缩放比例以避免内存问题
         useCORS: true,
         allowTaint: true,
         scrollX: 0,
         scrollY: 0,
-        width: preview.scrollWidth,
-        height: Math.max(preview.scrollHeight, preview.offsetHeight),
-        logging: false
+        width: clone.scrollWidth,
+        height: clone.scrollHeight,
+        logging: false,
+        // 确保包含所有子元素
+        ignoreElements: (element) => {
+          return element.tagName === 'SCRIPT';
+        }
       }).then(canvas => {
         const link = document.createElement('a');
         link.download = 'markdown-preview.png';
@@ -178,14 +204,12 @@ graph TD
       }).catch(err => {
         console.error('导出PNG失败:', err);
       }).finally(() => {
-        preview.style.overflow = originalStyle.overflow;
-        preview.style.height = originalStyle.height;
-        preview.style.maxHeight = originalStyle.maxHeight;
+        document.body.removeChild(clone);
       });
-    }, 100);
+    }, 300);
   };
-
-  // 导出为PDF - 提高分辨率和质量
+  
+  // 导出为PDF - 同样修复颜色和渲染问题
   const exportPDF = () => {
     setIsExportMenuOpen(false);
     const preview = document.querySelector('.preview');
@@ -194,27 +218,50 @@ graph TD
       return;
     }
     
-    const originalStyle = {
-      overflow: preview.style.overflow,
-      height: preview.style.height,
-      maxHeight: preview.style.maxHeight
+    const getThemeBackgroundColor = () => {
+      const body = document.body;
+      const computedStyle = window.getComputedStyle(body);
+      return computedStyle.backgroundColor || 
+             (body.classList.contains('dark') ? '#1e1e1e' : '#ffffff');
     };
     
-    preview.style.overflow = 'visible';
-    preview.style.height = 'auto';
-    preview.style.maxHeight = 'none';
+    const getThemeTextColor = () => {
+      const previewEl = document.querySelector('.preview');
+      if (!previewEl) return '#333333';
+      const computedStyle = window.getComputedStyle(previewEl);
+      return computedStyle.color || '#333333';
+    };
+    
+    const clone = preview.cloneNode(true);
+    clone.style.cssText = `
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+      width: ${preview.scrollWidth}px;
+      min-height: ${preview.scrollHeight}px;
+      background-color: ${getThemeBackgroundColor()};
+      color: ${getThemeTextColor()};
+      padding: 20px;
+      box-sizing: border-box;
+      overflow: visible;
+    `;
+    
+    document.body.appendChild(clone);
     
     setTimeout(() => {
-      html2canvas(preview, {
-        backgroundColor: document.body.classList.contains('dark') ? '#1e1e1e' : '#ffffff',
-        scale: 3,
+      html2canvas(clone, {
+        backgroundColor: getThemeBackgroundColor(),
+        scale: 2,
         useCORS: true,
         allowTaint: true,
         scrollX: 0,
         scrollY: 0,
-        width: preview.scrollWidth,
-        height: Math.max(preview.scrollHeight, preview.offsetHeight),
-        logging: false
+        width: clone.scrollWidth,
+        height: clone.scrollHeight,
+        logging: false,
+        ignoreElements: (element) => {
+          return element.tagName === 'SCRIPT';
+        }
       }).then(canvas => {
         const imgData = canvas.toDataURL('image/png', 1.0);
         const pdf = new jsPDF({
@@ -245,11 +292,9 @@ graph TD
       }).catch(err => {
         console.error('导出PDF失败:', err);
       }).finally(() => {
-        preview.style.overflow = originalStyle.overflow;
-        preview.style.height = originalStyle.height;
-        preview.style.maxHeight = originalStyle.maxHeight;
+        document.body.removeChild(clone);
       });
-    }, 100);
+    }, 300);
   };
 
   // 导出为HTML

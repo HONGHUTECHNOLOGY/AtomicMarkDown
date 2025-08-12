@@ -26,6 +26,32 @@ h1 {
   color: #333;
 }
 
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.settings-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.3rem;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.settings-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
 .theme-selector {
   display: flex;
   gap: 0.5rem;
@@ -89,7 +115,7 @@ h1 {
   align-items: center;
   /* 优化过渡效果，使用更丝滑的缓动函数 */
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 10001; /* 提高z-index，确保工具栏在大部分元素之上 */
+  z-index: 9999; /* 提高z-index，确保工具栏在大部分元素之上 */
   overflow: visible; /* 添加此行以确保下拉菜单能够正确显示 */
 }
 
