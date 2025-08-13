@@ -1,7 +1,29 @@
+// 在文件顶部添加worker配置
 import React, { useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
 import MonacoEditor from '@monaco-editor/react';
 
-const Editor = forwardRef(({ markdown, setMarkdown, theme }, ref) => {
+// 配置Monaco Environment
+if (typeof window !== 'undefined' && !window.MonacoEnvironment) {
+  window.MonacoEnvironment = {
+    getWorker: function (moduleId, label) {
+      if (label === 'json') {
+        return new Worker(new URL('monaco-editor/esm/vs/language/json/json.worker', import.meta.url));
+      }
+      if (label === 'css' || label === 'scss' || label === 'less') {
+        return new Worker(new URL('monaco-editor/esm/vs/language/css/css.worker', import.meta.url));
+      }
+      if (label === 'html' || label === 'handlebars' || label === 'razor') {
+        return new Worker(new URL('monaco-editor/esm/vs/language/html/html.worker', import.meta.url));
+      }
+      if (label === 'typescript' || label === 'javascript') {
+        return new Worker(new URL('monaco-editor/esm/vs/language/typescript/ts.worker', import.meta.url));
+      }
+      return new Worker(new URL('monaco-editor/esm/vs/editor/editor.worker', import.meta.url));
+    }
+  };
+}
+
+const Editor = forwardRef(({ markdown, setMarkdown, theme, settings }, ref) => {  // 添加settings参数
   const editorRef = useRef(null);
   // 根据当前主题设置编辑器主题
   const monacoTheme = theme === 'dark' || theme === 'blue' ? 'vs-dark' : 'vs';
@@ -109,6 +131,22 @@ const Editor = forwardRef(({ markdown, setMarkdown, theme }, ref) => {
     }
   }, [markdown]);
 
+  // 根据设置调整编辑器选项
+  const editorOptions = {
+    minimap: { enabled: false },
+    scrollBeyondLastLine: false,
+    automaticLayout: true,
+    fontSize: parseInt(settings?.fontSize) || 14,  // 根据设置调整字体大小
+    wordWrap: 'on',
+    lineNumbers: settings?.showLineNumbers ? 'on' : 'off',  // 根据设置显示或隐藏行号
+    renderWhitespace: 'selection',
+    smoothScrolling: true,
+    scrollbar: {
+      vertical: 'auto',
+      horizontal: 'auto'
+    }
+  };
+
   return (
     <div className="editor" style={{ height: '100%', width: '100%' }}>
       <MonacoEditor
@@ -117,20 +155,7 @@ const Editor = forwardRef(({ markdown, setMarkdown, theme }, ref) => {
         value={markdown || ''}
         onChange={handleEditorChange}
         theme={monacoTheme}
-        options={{
-          minimap: { enabled: false },
-          scrollBeyondLastLine: false,
-          automaticLayout: true,
-          fontSize: 14,
-          wordWrap: 'on',
-          lineNumbers: 'on',
-          renderWhitespace: 'selection',
-          smoothScrolling: true,
-          scrollbar: {
-            vertical: 'auto',
-            horizontal: 'auto'
-          }
-        }}
+        options={editorOptions}  // 使用动态配置的选项
         onMount={handleEditorDidMount}
       />
     </div>

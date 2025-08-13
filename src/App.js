@@ -16,19 +16,22 @@ function App() {
   // 扩展主题选项
   const [theme, setTheme] = useState('light');
   const [markdown, setMarkdown] = useState('');
-  const [settings, setSettings] = useState({
+  const [settings, setSettings] = useState({}); // 初始化为空对象
+  const [showSettings, setShowSettings] = useState(false);
+  const editorRef = useRef(null);
+
+  // 默认设置
+  const defaultSettings = {
     autoSave: true,
     showLineNumbers: false,
     fontSize: '14',
     enableMermaid: true,
     enableCodeHighlight: true,
-    mathRenderer: 'none',
+    mathRenderer: 'katex',
     pngQuality: '2',
     includeBackground: true,
     pdfPageSize: 'a4'
-  });
-  const [showSettings, setShowSettings] = useState(false);
-  const editorRef = useRef(null);
+  };
 
   // 可用主题列表
   const availableThemes = [
@@ -39,11 +42,18 @@ function App() {
     { id: 'purple', name: '优雅紫' }
   ];
 
-  // 初始化时从localStorage加载
+  // 在初始化时从localStorage加载的useEffect中添加调试信息
   useEffect(() => {
+    console.log('开始加载设置...');
     const savedMarkdown = localStorage.getItem('markdown');
     const savedTheme = localStorage.getItem('theme');
     const savedSettings = localStorage.getItem('settings');
+    
+    console.log('从localStorage读取的数据:', {
+      savedMarkdown,
+      savedTheme,
+      savedSettings
+    });
     
     if (savedMarkdown) {
       setMarkdown(savedMarkdown);
@@ -51,13 +61,14 @@ function App() {
     if (savedTheme && availableThemes.find(t => t.id === savedTheme)) {
       setTheme(savedTheme);
     }
-    if (savedSettings) {
-      try {
-        setSettings(JSON.parse(savedSettings));
-      } catch (e) {
-        console.error('加载设置失败:', e);
-      }
-    }
+    
+    // 设置默认值，如果localStorage中没有保存的设置，则使用默认设置
+    const finalSettings = savedSettings ? 
+      { ...defaultSettings, ...JSON.parse(savedSettings) } : 
+      defaultSettings;
+    
+    console.log('最终使用的设置:', finalSettings);
+    setSettings(finalSettings);
   }, []);
 
   // 自动保存到localStorage - 优化版本
@@ -74,8 +85,13 @@ function App() {
   }, [markdown]);
 
   // 保存设置到localStorage
+  // 在保存设置到localStorage的useEffect中添加调试信息
   useEffect(() => {
-    localStorage.setItem('settings', JSON.stringify(settings));
+    // 只有当settings不为空对象时才保存
+    if (Object.keys(settings).length > 0) {
+      console.log('设置已更新，正在保存到localStorage:', settings);
+      localStorage.setItem('settings', JSON.stringify(settings));
+    }
   }, [settings]);
 
   // 切换主题
@@ -129,7 +145,7 @@ function App() {
           theme={theme} 
           settings={settings}
         />
-        <Preview markdown={markdown} theme={theme} settings={settings} />
+        <Preview markdown={markdown} theme={theme} settings={settings} />  {/* 确保传递settings参数 */}
       </div>
       <Settings 
         isOpen={showSettings} 

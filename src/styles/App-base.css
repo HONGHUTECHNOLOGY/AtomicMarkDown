@@ -95,11 +95,13 @@ h1 {
 .preview {
   flex: 1;
   overflow: auto;
-  padding: 1.5rem;
+  padding: 0.8rem; /* 进一步减少内边距 */
   box-sizing: border-box;
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 8px;
-  margin: 0.5rem;
+  margin: 0.2rem; /* 进一步减少外边距 */
+  /* 防止子元素影响容器尺寸 */
+  contain: layout style;
 }
 
 .editor {
@@ -296,4 +298,26 @@ h1 {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.3);
+}
+
+/* 数学公式样式 */
+.math-inline {
+  display: inline-block;
+  margin: 0 0.1em; /* 减少左右边距 */
+  vertical-align: middle; /* 垂直居中对齐 */
+}
+
+.math-block {
+  display: block;
+  text-align: center;
+  margin: 0.1em 0; /* 减少上下边距 */
+  padding: 0.2em 0; /* 使用内边距替代部分外边距 */
+  line-height: 1.2; /* 控制行高 */
+  overflow-x: auto; /* 允许横向滚动 */
+  overflow-y: hidden; /* 防止纵向滚动 */
+}
+
+.math-error {
+  color: #ff0000;
+  font-style: italic;
 }

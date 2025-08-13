@@ -76,7 +76,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
         <label>
           <input 
             type="checkbox" 
-            checked={settings.autoSave || false}
+            checked={settings.autoSave !== false}  // 修改这里
             onChange={(e) => handleCheckboxChange('autoSave', e.target.checked)}
           />
           <span className="setting-label">自动保存</span>
@@ -87,7 +87,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
         <label>
           <input 
             type="checkbox" 
-            checked={settings.showLineNumbers || false}
+            checked={settings.showLineNumbers !== false}  // 修改这里
             onChange={(e) => handleCheckboxChange('showLineNumbers', e.target.checked)}
           />
           <span className="setting-label">显示行号</span>
@@ -134,7 +134,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
         <label>
           <input 
             type="checkbox" 
-            checked={settings.enableMermaid || true}
+            checked={settings.enableMermaid !== false}  // 修改这里
             onChange={(e) => handleCheckboxChange('enableMermaid', e.target.checked)}
           />
           <span className="setting-label">启用Mermaid图表</span>
@@ -145,7 +145,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
         <label>
           <input 
             type="checkbox" 
-            checked={settings.enableCodeHighlight || true}
+            checked={settings.enableCodeHighlight !== false}  // 修改这里
             onChange={(e) => handleCheckboxChange('enableCodeHighlight', e.target.checked)}
           />
           <span className="setting-label">启用代码高亮</span>
@@ -156,7 +156,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
         <label>
           <input 
             type="checkbox" 
-            checked={settings.enableTaskLists || true}
+            checked={settings.enableTaskLists !== false}  // 修改这里
             onChange={(e) => handleCheckboxChange('enableTaskLists', e.target.checked)}
           />
           <span className="setting-label">启用任务列表</span>
@@ -172,7 +172,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
             className="setting-select"
           >
             <option value="none">不启用</option>
-            <option value="katex">KaTeX (推荐)</option>
+            <option value="katex">KaTeX(LaTeX)</option>
             <option value="mathjax">MathJax</option>
           </select>
         </label>
@@ -201,7 +201,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
         <label>
           <input 
             type="checkbox" 
-            checked={settings.includeBackground || true}
+            checked={settings.includeBackground !== false}  // 修改这里
             onChange={(e) => handleCheckboxChange('includeBackground', e.target.checked)}
           />
           <span className="setting-label">包含背景色</span>
@@ -244,19 +244,20 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
       <h3>关于我们</h3>
       <div className="about-content">
         <div className="about-header">
-          <h4>🚀 原子Markdown编辑器</h4>
-          <p className="version">版本 1.0.0</p>
+          <h4>原子Markdown编辑器</h4>
+          <p className="version">版本 1.1.0 Beta</p>
         </div>
         
         <div className="version-info">
-          <h5>📋 功能特性</h5>
+          <h4>功能特性</h4>
           <ul className="feature-list">
-            <li>✨ 实时预览与编辑</li>
-            <li>🎨 多种主题切换</li>
-            <li>📊 Mermaid图表支持</li>
-            <li>📝 代码高亮与数学公式</li>
-            <li>📤 多种格式导出</li>
-            <li>💾 自动保存功能</li>
+            <li>实时预览与编辑</li>
+            <li>多种主题切换</li>
+            <li>Mermaid图表支持</li>
+            <li>代码高亮</li>
+            <li>KateX(LateX)数学公式渲染</li>
+            <li>多种格式导出</li>
+            <li>自动保存功能</li>
           </ul>
         </div>
         
