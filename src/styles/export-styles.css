@@ -105,12 +105,14 @@
   background: linear-gradient(135deg, rgba(120, 120, 120, 0.7) 0%, rgba(80, 80, 80, 0.7) 100%);
 }
 
+/* 保留这部分蓝色主题样式 */
+/* 修改蓝色主题下的导出按钮样式 */
 .blue .export-btn {
-  background: linear-gradient(135deg, rgba(120, 120, 120, 0.6) 0%, rgba(80, 80, 80, 0.6) 100%);
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.7) 0%, rgba(30, 136, 229, 0.7) 100%);
 }
 
 .blue .export-btn:hover {
-  background: linear-gradient(135deg, rgba(120, 120, 120, 0.7) 0%, rgba(80, 80, 80, 0.7) 100%);
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.8) 0%, rgba(30, 136, 229, 0.8) 100%);
 }
 
 .green .export-btn {
@@ -126,6 +128,58 @@
 }
 
 .purple .export-btn:hover {
+  background: linear-gradient(135deg, rgba(156, 39, 176, 0.7) 0%, rgba(123, 31, 162, 0.7) 100%);
+}
+
+/* 添加到文件中导出按钮样式后面 */
+.import-btn {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.import-btn:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* 主题适配 - 导入按钮 */
+.dark .import-btn {
+  background: linear-gradient(135deg, rgba(120, 120, 120, 0.6) 0%, rgba(80, 80, 80, 0.6) 100%);
+}
+
+.dark .import-btn:hover {
+  background: linear-gradient(135deg, rgba(120, 120, 120, 0.7) 0%, rgba(80, 80, 80, 0.7) 100%);
+}
+
+.blue .import-btn {
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.7) 0%, rgba(30, 136, 229, 0.7) 100%);
+}
+
+.blue .import-btn:hover {
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.8) 0%, rgba(30, 136, 229, 0.8) 100%);
+}
+
+.green .import-btn {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.6) 0%, rgba(56, 142, 60, 0.6) 100%);
+}
+
+.green .import-btn:hover {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.7) 0%, rgba(56, 142, 60, 0.7) 100%);
+}
+
+.purple .import-btn {
+  background: linear-gradient(135deg, rgba(156, 39, 176, 0.6) 0%, rgba(123, 31, 162, 0.6) 100%);
+}
+
+.purple .import-btn:hover {
   background: linear-gradient(135deg, rgba(156, 39, 176, 0.7) 0%, rgba(123, 31, 162, 0.7) 100%);
 }
 

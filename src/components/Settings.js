@@ -13,6 +13,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
     { id: 'basic', label: '基本设置', icon: '' },
     { id: 'render', label: '渲染设置', icon: '' },
     { id: 'export', label: '导出设置', icon: '' },
+    { id: 'backup', label: '配置备份', icon: '' },
     { id: 'about', label: '关于我们', icon: '' }
   ];
 
@@ -180,6 +181,74 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
     </div>
   );
 
+  const renderImportExportSettings = () => (
+    <div className="settings-section">
+      <h3>配置备份</h3>
+      <div className="setting-item">
+        <div className="setting-label">导出配置</div>
+        <p className="setting-description">将当前设置导出为配置文件，便于在其他设备上使用</p>
+        <button 
+          className="export-btn"
+          onClick={() => {
+            // 创建配置文件
+            const configData = {
+              settings: settings,
+              exportDate: new Date().toISOString(),
+              version: '1.2.0'
+            };
+            
+            // 创建并下载文件
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(configData, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "atomic-markdown-config.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+          }}
+        >
+          导出配置
+        </button>
+      </div>
+      <div className="setting-item">
+        <div className="setting-label">导入配置</div>
+        <p className="setting-description">从配置文件导入设置，覆盖当前配置</p>
+        <input 
+          type="file" 
+          accept=".json" 
+          onChange={(e) => {
+            const file = e.target.files[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = (event) => {
+                try {
+                  const configData = JSON.parse(event.target.result);
+                  if (configData.settings) {
+                    updateSettings(configData.settings);
+                    alert('配置导入成功！');
+                  } else {
+                    alert('配置文件格式不正确！');
+                  }
+                } catch (error) {
+                  alert('配置文件解析失败：' + error.message);
+                }
+              };
+              reader.readAsText(file);
+            }
+          }}
+          style={{ display: 'none' }}
+          id="import-config-input"
+        />
+        <button 
+          className="import-btn"
+          onClick={() => document.getElementById('import-config-input').click()}
+        >
+          导入配置
+        </button>
+      </div>
+    </div>
+  );
+
   const renderExportSettings = () => (
     <div className="settings-section">
       <h3>导出设置</h3>
@@ -294,6 +363,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
       basic: renderBasicSettings,
       render: renderRenderSettings,
       export: renderExportSettings,
+      backup: renderImportExportSettings,
       about: renderAboutSettings
     };
     
