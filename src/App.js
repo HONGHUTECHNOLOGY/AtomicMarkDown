@@ -60,6 +60,8 @@ function App() {
     }
     if (savedTheme && availableThemes.find(t => t.id === savedTheme)) {
       setTheme(savedTheme);
+      // 添加这一行来应用主题到body元素
+      document.body.className = savedTheme;
     }
     
     // 设置默认值，如果localStorage中没有保存的设置，则使用默认设置
