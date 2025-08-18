@@ -263,7 +263,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
         
         <div className="about-links">
           <p>
-            <strong>开发者：</strong>鸿鹄科技团队
+            <strong>开发者：</strong>鸿鹄科技
           </p>
           <p>
             <strong>技术栈：</strong>React 19 + Monaco Editor + Mermaid
@@ -272,16 +272,16 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
             <a href="https://gitee.com/honghutechnology/AtomicMarkDown" 
                target="_blank" 
                rel="noopener noreferrer"
-               className="project-link">
-              🌟 访问项目主页
+               className="gitee-link">
+              🌟 Gitee项目地址
             </a>
           </p>
           <p>
-            <a href="https://github.com" 
+            <a href="https://github.com/HONGHUTECHNOLOGY/AtomicMarkDown" 
                target="_blank" 
                rel="noopener noreferrer"
                className="github-link">
-              📦 查看源代码
+              🌟 Github项目地址
             </a>
           </p>
         </div>
