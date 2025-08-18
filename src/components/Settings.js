@@ -10,10 +10,10 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
   const [prevActiveMenu, setPrevActiveMenu] = useState(activeMenu);
 
   const menuItems = [
-    { id: 'basic', label: '基本设置', icon: '⚙️' },
-    { id: 'render', label: '渲染设置', icon: '🎨' },
-    { id: 'export', label: '导出设置', icon: '📤' },
-    { id: 'about', label: '关于我们', icon: 'ℹ️' }
+    { id: 'basic', label: '基本设置', icon: '' },
+    { id: 'render', label: '渲染设置', icon: '' },
+    { id: 'export', label: '导出设置', icon: '' },
+    { id: 'about', label: '关于我们', icon: '' }
   ];
 
   // 在useEffect中修改关闭处理逻辑

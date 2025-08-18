@@ -4,7 +4,7 @@ import { jsPDF } from 'jspdf/dist/jspdf.umd.min.js';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 
-export const Toolbar = ({ editorRef }) => {
+export const Toolbar = ({ editorRef, settings }) => {  // 添加settings参数
   const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
   const [isChartMenuOpen, setIsChartMenuOpen] = useState(false);
   // 添加工具栏展开/收起状态
@@ -138,7 +138,36 @@ graph TD
     insertAtCursor(tableTemplate);
   };
 
-  // 导出为PNG - 修复颜色和渲染区域问题
+  // 生成导出文件名的函数
+  const generateFileName = (extension) => {
+    const fileNameFormat = settings.exportFileName || 'timestamp';
+    
+    switch (fileNameFormat) {
+      case 'title':
+        // 从文档中提取标题（第一个H1标题）
+        const preview = document.querySelector('.preview');
+        if (preview) {
+          const h1 = preview.querySelector('h1');
+          if (h1 && h1.textContent.trim()) {
+            return `${h1.textContent.trim()}.${extension}`;
+          }
+        }
+        // 如果没有找到标题，使用默认名称
+        return `markdown-preview.${extension}`;
+      case 'custom':
+        // 这里可以添加自定义文件名的逻辑
+        // 暂时使用默认名称
+        return `markdown-preview.${extension}`;
+      case 'timestamp':
+      default:
+        // 使用时间戳
+        const now = new Date();
+        const timestamp = `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}-${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}${now.getSeconds().toString().padStart(2, '0')}`;
+        return `markdown-${timestamp}.${extension}`;
+    }
+  };
+
+  // 导出为PNG - 修复内容缺失问题
   const exportPNG = () => {
     setIsExportMenuOpen(false);
     const preview = document.querySelector('.preview');
@@ -147,32 +176,72 @@ graph TD
       return;
     }
     
-    // 获取当前主题的实际背景色
+    // 获取预览区域的实际背景色
     const getThemeBackgroundColor = () => {
-      const body = document.body;
-      const computedStyle = window.getComputedStyle(body);
-      return computedStyle.backgroundColor || 
-             (body.classList.contains('dark') ? '#1e1e1e' : '#ffffff');
+      const computedStyle = window.getComputedStyle(preview);
+      return computedStyle.backgroundColor || '#ffffff';
     };
     
     // 获取当前主题的文字颜色
     const getThemeTextColor = () => {
-      const previewEl = document.querySelector('.preview');
-      if (!previewEl) return '#333333';
-      const computedStyle = window.getComputedStyle(previewEl);
+      const computedStyle = window.getComputedStyle(preview);
       return computedStyle.color || '#333333';
     };
     
+    // 根据设置确定是否包含背景色
+    const includeBackground = settings.includeBackground !== false; // 默认为true
+    
     // 克隆预览区域以避免样式干扰
     const clone = preview.cloneNode(true);
+    
+    // 获取原始预览元素的所有计算样式
+    const computedStyle = window.getComputedStyle(preview);
+    let styleText = '';
+    
+    // 复制所有样式属性，除了背景色（根据设置决定）
+    for (let i = 0; i < computedStyle.length; i++) {
+      const property = computedStyle[i];
+      const value = computedStyle.getPropertyValue(property);
+      
+      // 跳过背景色相关属性，我们会单独处理
+      if (property.includes('background') && property !== 'background-attachment') {
+        continue;
+      }
+      
+      styleText += `${property}: ${value}; `;
+    }
+    
+    // 根据设置添加背景色
+    const backgroundColorStyle = includeBackground ? `background-color: ${getThemeBackgroundColor()};` : 'background-color: transparent;';
+    
+    // 计算实际内容尺寸，确保包含所有内容
+    const originalWidth = preview.scrollWidth;
+    const originalHeight = Math.max(preview.scrollHeight, preview.clientHeight);
+    
+    // 对于非常长的内容，可能需要特殊处理
+    // 获取所有子元素的总高度
+    let contentHeight = 0;
+    const children = preview.children;
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i];
+      const rect = child.getBoundingClientRect();
+      const computedChildStyle = window.getComputedStyle(child);
+      const marginTop = parseFloat(computedChildStyle.marginTop) || 0;
+      const marginBottom = parseFloat(computedChildStyle.marginBottom) || 0;
+      contentHeight += rect.height + marginTop + marginBottom;
+    }
+    
+    // 使用最大的高度值确保包含所有内容
+    const actualHeight = Math.max(originalHeight, contentHeight, preview.offsetHeight);
+    
     clone.style.cssText = `
       position: absolute;
       top: -9999px;
       left: -9999px;
-      width: ${preview.scrollWidth}px;
-      min-height: ${preview.scrollHeight}px;
-      background-color: ${getThemeBackgroundColor()};
-      color: ${getThemeTextColor()};
+      width: ${originalWidth}px;
+      height: ${actualHeight}px;
+      ${styleText}
+      ${backgroundColorStyle}
       padding: 20px;
       box-sizing: border-box;
       overflow: visible;
@@ -182,15 +251,38 @@ graph TD
     
     // 确保所有图片和样式都已加载
     setTimeout(() => {
+      // 根据设置确定PNG质量
+      const pngQuality = settings.pngQuality || '2';
+      let scale = 2; // 默认高清 (2x)
+      
+      switch (pngQuality) {
+        case '1':
+          scale = 1; // 标准 (1x)
+          break;
+        case '2':
+          scale = 2; // 高清 (2x)
+          break;
+        case '3':
+          scale = 3; // 超清 (3x)
+          break;
+        default:
+          scale = 2;
+      }
+      
+      // 根据设置确定html2canvas的背景色
+      // 当不包含背景色时，明确设置为透明
+      const backgroundColor = includeBackground ? getThemeBackgroundColor() : 'transparent';
+      
+      // 使用我们计算出的实际尺寸，而不是clone.scrollWidth/scrollHeight
       html2canvas(clone, {
-        backgroundColor: getThemeBackgroundColor(),
-        scale: 2, // 降低缩放比例以避免内存问题
+        backgroundColor: backgroundColor,
+        scale: scale,
         useCORS: true,
         allowTaint: true,
         scrollX: 0,
         scrollY: 0,
-        width: clone.scrollWidth,
-        height: clone.scrollHeight,
+        width: originalWidth,
+        height: actualHeight,
         logging: false,
         // 确保包含所有子元素
         ignoreElements: (element) => {
@@ -198,7 +290,7 @@ graph TD
         }
       }).then(canvas => {
         const link = document.createElement('a');
-        link.download = 'markdown-preview.png';
+        link.download = generateFileName('png');  // 使用生成的文件名
         link.href = canvas.toDataURL('image/png', 1.0);
         link.click();
       }).catch(err => {
@@ -209,7 +301,7 @@ graph TD
     }, 300);
   };
   
-  // 导出为PDF - 同样修复颜色和渲染问题
+  // 导出为PDF - 修复内容缺失问题
   const exportPDF = () => {
     setIsExportMenuOpen(false);
     const preview = document.querySelector('.preview');
@@ -218,29 +310,92 @@ graph TD
       return;
     }
     
+    // 获取预览区域的实际背景色
     const getThemeBackgroundColor = () => {
-      const body = document.body;
-      const computedStyle = window.getComputedStyle(body);
-      return computedStyle.backgroundColor || 
-             (body.classList.contains('dark') ? '#1e1e1e' : '#ffffff');
+      const computedStyle = window.getComputedStyle(preview);
+      return computedStyle.backgroundColor || '#ffffff';
     };
     
     const getThemeTextColor = () => {
-      const previewEl = document.querySelector('.preview');
-      if (!previewEl) return '#333333';
-      const computedStyle = window.getComputedStyle(previewEl);
+      const computedStyle = window.getComputedStyle(preview);
       return computedStyle.color || '#333333';
     };
     
+    // 将RGBA颜色转换为RGB或HEX格式，因为jsPDF不支持RGBA
+    const convertRgbaToRgb = (rgbaColor) => {
+      // 如果不是RGBA格式，直接返回
+      if (!rgbaColor.startsWith('rgba')) {
+        return rgbaColor;
+      }
+      
+      // 解析RGBA值
+      const match = rgbaColor.match(/rgba\((\d+),\s*(\d+),\s*(\d+),\s*([\d.]+)\)/);
+      if (!match) {
+        return '#ffffff'; // 默认返回白色
+      }
+      
+      const r = parseInt(match[1]);
+      const g = parseInt(match[2]);
+      const b = parseInt(match[3]);
+      // const a = parseFloat(match[4]); // 透明度值，这里我们忽略它
+      
+      // 返回RGB格式
+      return `rgb(${r}, ${g}, ${b})`;
+    };
+    
+    // 根据设置确定是否包含背景色
+    const includeBackground = settings.includeBackground !== false; // 默认为true
+    
     const clone = preview.cloneNode(true);
+    
+    // 获取原始预览元素的所有计算样式
+    const computedStyle = window.getComputedStyle(preview);
+    let styleText = '';
+    
+    // 复制所有样式属性，除了背景色（根据设置决定）
+    for (let i = 0; i < computedStyle.length; i++) {
+      const property = computedStyle[i];
+      const value = computedStyle.getPropertyValue(property);
+      
+      // 跳过背景色相关属性，我们会单独处理
+      if (property.includes('background') && property !== 'background-attachment') {
+        continue;
+      }
+      
+      styleText += `${property}: ${value}; `;
+    }
+    
+    // 根据设置添加背景色
+    const backgroundColorStyle = includeBackground ? `background-color: ${getThemeBackgroundColor()};` : 'background-color: transparent;';
+    
+    // 计算实际内容尺寸，确保包含所有内容
+    const originalWidth = preview.scrollWidth;
+    const originalHeight = Math.max(preview.scrollHeight, preview.clientHeight);
+    
+    // 对于非常长的内容，可能需要特殊处理
+    // 获取所有子元素的总高度
+    let contentHeight = 0;
+    const children = preview.children;
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i];
+      const rect = child.getBoundingClientRect();
+      const computedChildStyle = window.getComputedStyle(child);
+      const marginTop = parseFloat(computedChildStyle.marginTop) || 0;
+      const marginBottom = parseFloat(computedChildStyle.marginBottom) || 0;
+      contentHeight += rect.height + marginTop + marginBottom;
+    }
+    
+    // 使用最大的高度值确保包含所有内容
+    const actualHeight = Math.max(originalHeight, contentHeight, preview.offsetHeight);
+    
     clone.style.cssText = `
       position: absolute;
       top: -9999px;
       left: -9999px;
-      width: ${preview.scrollWidth}px;
-      min-height: ${preview.scrollHeight}px;
-      background-color: ${getThemeBackgroundColor()};
-      color: ${getThemeTextColor()};
+      width: ${originalWidth}px;
+      height: ${actualHeight}px;
+      ${styleText}
+      ${backgroundColorStyle}
       padding: 20px;
       box-sizing: border-box;
       overflow: visible;
@@ -249,46 +404,91 @@ graph TD
     document.body.appendChild(clone);
     
     setTimeout(() => {
+      // 根据设置确定html2canvas的背景色
+      // 当不包含背景色时，明确设置为透明
+      const backgroundColor = includeBackground ? getThemeBackgroundColor() : 'transparent';
+      
+      // 使用我们计算出的实际尺寸，而不是clone.scrollWidth/scrollHeight
       html2canvas(clone, {
-        backgroundColor: getThemeBackgroundColor(),
+        backgroundColor: backgroundColor,
         scale: 2,
         useCORS: true,
         allowTaint: true,
         scrollX: 0,
         scrollY: 0,
-        width: clone.scrollWidth,
-        height: clone.scrollHeight,
+        width: originalWidth,
+        height: actualHeight,
         logging: false,
         ignoreElements: (element) => {
           return element.tagName === 'SCRIPT';
         }
       }).then(canvas => {
         const imgData = canvas.toDataURL('image/png', 1.0);
+        
+        // 根据设置确定PDF页面大小
+        const pdfPageSize = settings.pdfPageSize || 'a4';
+        let format = 'a4';
+        
+        switch (pdfPageSize) {
+          case 'a3':
+            format = 'a3';
+            break;
+          case 'a4':
+            format = 'a4';
+            break;
+          case 'letter':
+            format = 'letter';
+            break;
+          default:
+            format = 'a4';
+        }
+        
         const pdf = new jsPDF({
           orientation: 'p',
           unit: 'mm',
-          format: 'a4',
+          format: format,
           compress: false
         });
         
-        const imgWidth = 210;
-        const pageHeight = 295;
-        const imgHeight = canvas.height * imgWidth / canvas.width;
-        let heightLeft = imgHeight;
-        
-        let position = 0;
-        
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight, '', 'FAST');
-        heightLeft -= pageHeight;
-        
-        while (heightLeft >= 0) {
-          position = heightLeft - imgHeight;
-          pdf.addPage();
-          pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight, '', 'FAST');
-          heightLeft -= pageHeight;
+        // 根据页面大小设置图像尺寸
+        let imgWidth, pageHeight;
+        if (format === 'a3') {
+          imgWidth = 297;
+          pageHeight = 420;
+        } else if (format === 'a4') {
+          imgWidth = 210;
+          pageHeight = 295;
+        } else if (format === 'letter') {
+          imgWidth = 216;
+          pageHeight = 279;
+        } else {
+          imgWidth = 210;
+          pageHeight = 295;
         }
         
-        pdf.save('markdown-preview.pdf');
+        const imgHeight = canvas.height * imgWidth / canvas.width;
+        
+        // 修复：确保每一页都有正确的背景色
+        // 转换背景色格式以确保jsPDF可以处理
+        const pageBackgroundColor = includeBackground ? convertRgbaToRgb(getThemeBackgroundColor()) : 'transparent';
+        
+        // 使用jsPDF的分页功能
+        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+        
+        // 如果内容高度超过页面高度，则进行分页
+        if (imgHeight > pageHeight) {
+          let pages = Math.ceil(imgHeight / pageHeight);
+          for (let i = 1; i < pages; i++) {
+            pdf.addPage();
+            // 填充背景色
+            pdf.setFillColor(pageBackgroundColor);
+            pdf.rect(0, 0, imgWidth, pageHeight, 'F');
+            // 添加内容，使用裁剪功能
+            pdf.addImage(imgData, 'PNG', 0, -i * pageHeight, imgWidth, imgHeight);
+          }
+        }
+        
+        pdf.save(generateFileName('pdf'));  // 使用生成的文件名
       }).catch(err => {
         console.error('导出PDF失败:', err);
       }).finally(() => {
@@ -301,6 +501,28 @@ graph TD
   const exportHTML = () => {
     setIsExportMenuOpen(false);
     const preview = document.querySelector('.preview');
+    
+    // 获取预览区域的实际背景色
+    const getThemeBackgroundColor = () => {
+      const computedStyle = window.getComputedStyle(preview);
+      return computedStyle.backgroundColor || '#ffffff';
+    };
+    
+    // 获取当前主题的文字颜色
+    const getThemeTextColor = () => {
+      const computedStyle = window.getComputedStyle(preview);
+      return computedStyle.color || '#333333';
+    };
+    
+    // 根据设置确定是否包含背景色
+    const includeBackground = settings.includeBackground !== false; // 默认为true
+    
+    // 根据设置确定背景样式
+    // 当不包含背景色时，明确设置背景色为透明，但保持文字颜色
+    const backgroundColorStyle = includeBackground ? `background-color: ${getThemeBackgroundColor()};` : 'background-color: transparent;';
+    // 文字颜色始终保持，与背景色设置无关
+    const textColorStyle = `color: ${getThemeTextColor()};`;
+    
     const htmlContent = preview ? preview.innerHTML : '';
     const fullHTML = `<!DOCTYPE html>
 <html>
@@ -309,7 +531,15 @@ graph TD
   <title>Markdown Export</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css">
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 800px; margin: 0 auto; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; 
+      line-height: 1.6; 
+      padding: 20px; 
+      max-width: 800px; 
+      margin: 0 auto; 
+      ${backgroundColorStyle}
+      ${textColorStyle}
+    }
     pre { background: #f6f8fa; padding: 16px; border-radius: 6px; overflow-x: auto; }
     code { background: rgba(175, 184, 193, 0.2); padding: 0.2em 0.4em; border-radius: 3px; }
     blockquote { border-left: 4px solid #dfe2e5; margin: 1em 0; padding-left: 1em; color: #6a737d; }
@@ -328,25 +558,27 @@ ${htmlContent}
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'markdown-preview.html';
+    link.download = generateFileName('html');  // 使用生成的文件名
     link.click();
     URL.revokeObjectURL(url);
   };
-
+  
   // 导出为MD
   const exportMD = () => {
     setIsExportMenuOpen(false);
     const editor = document.querySelector('.editor textarea');
     if (editor) {
+      // MD导出实际上不需要处理背景色，因为它只是纯文本
+      // 但我们仍然使用generateFileName来生成文件名
       const blob = new Blob([editor.value || ''], { type: 'text/markdown' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'markdown-preview.md';
+      link.download = generateFileName('md');  // 使用生成的文件名
       link.click();
       URL.revokeObjectURL(url);
     }
-  };
+  }
 
   // 导出选项配置
   const exportOptions = [

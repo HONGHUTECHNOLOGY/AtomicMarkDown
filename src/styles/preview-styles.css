@@ -1,0 +1,20 @@
+/* preview-styles.css - 预览区域样式 */
+
+/* 预览区域的h1标题样式 */
+.preview h1 {
+  margin: 1.5rem 0 1rem 0;
+  font-size: 2rem;
+  font-weight: bold; /* 修改为bold，使其与其他标题一致 */
+  color: inherit;
+  line-height: 1.2;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* 确保h1标题在不同主题下的一致性 */
+.dark .preview h1,
+.blue .preview h1,
+.green .preview h1,
+.purple .preview h1 {
+  color: inherit;
+}
