@@ -26,7 +26,7 @@ if (typeof window !== 'undefined' && !window.MonacoEnvironment) {
 const Editor = forwardRef(({ markdown, setMarkdown, theme, settings }, ref) => {  // 添加settings参数
   const editorRef = useRef(null);
   // 根据当前主题设置编辑器主题
-  const monacoTheme = theme === 'dark' || theme === 'blue' ? 'vs-dark' : 'vs';
+  const monacoTheme = theme === 'dark' ? 'vs-dark' : 'vs';
   const skipNextUpdate = useRef(false);
 
   // 暴露方法给父组件
@@ -82,15 +82,22 @@ const Editor = forwardRef(({ markdown, setMarkdown, theme, settings }, ref) => {
       // 蓝色主题
       else if (theme === 'blue') {
         monaco.editor.defineTheme('blue-theme', {
-          base: 'vs-dark',
+          base: 'vs',  // 改为亮色主题基础
           inherit: true,
           rules: [],
           colors: {
-            'editor.background': '#1e3a5f',
-            'editor.lineHighlightBackground': '#2a4a6e',
-            'editorLineNumber.foreground': '#a0cfff',
-            'editorCursor.foreground': '#a0cfff',
-            'editor.foreground': '#e0f0ff'
+            'editor.background': '#f0f8ff',  // 亮蓝色背景
+            'editor.lineHighlightBackground': '#e1f0ff',  // 行高亮背景
+            'editorLineNumber.foreground': '#1e88e5',  // 行号颜色
+            'editorCursor.foreground': '#1e88e5',  // 光标颜色
+            'editor.foreground': '#0d47a1',  // 文字颜色
+            'editor.selectionBackground': '#90caf966',  // 选择背景
+            'editor.inactiveSelectionBackground': '#90caf944',  // 非活动选择背景
+            'editorWidget.background': '#f5f9ff',  // 编辑器小部件背景
+            'editorWidget.border': '#1e88e5',  // 编辑器小部件边框
+            'list.hoverBackground': '#e3f2fd',  // 列表悬停背景
+            'list.activeSelectionBackground': '#bbdefb',  // 列表活动选择背景
+            'list.inactiveSelectionBackground': '#e3f2fd'  // 列表非活动选择背景
           }
         });
         monaco.editor.setTheme('blue-theme');

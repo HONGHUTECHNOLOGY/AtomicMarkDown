@@ -64,7 +64,7 @@
   background: rgba(156, 39, 176, 0.5);
 }
 
-/* 添加到文件末尾 */
+
 .purple .toolbar-show-button {
   background: linear-gradient(135deg, rgba(156, 39, 176, 0.7), rgba(136, 14, 176, 0.7));
   color: white;
@@ -73,4 +73,16 @@
 
 .purple .toolbar-show-button:hover {
   background: linear-gradient(135deg, rgba(156, 39, 176, 0.8), rgba(136, 14, 176, 0.8));
+}
+
+.purple .editor code,
+.purple .preview code {
+  background-color: rgba(240, 230, 255, 0.3);
+  color: #6a1b9a;
+}
+
+.purple .editor pre,
+.purple .preview pre {
+  background-color: rgba(240, 230, 255, 0.2);
+  border: 1px solid rgba(156, 39, 176, 0.2);
 }

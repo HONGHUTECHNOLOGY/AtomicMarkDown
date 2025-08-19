@@ -32,7 +32,7 @@ export const Preview = ({ markdown, theme, settings }) => {
     if (settings?.enableMermaid !== false) {
       mermaid.initialize({
         startOnLoad: false,
-        theme: theme === 'dark' || theme === 'blue' ? 'dark' : 'default',
+        theme: theme === 'dark' ? 'dark' : 'default', // 修改蓝色主题使用default(浅色)主题
         securityLevel: 'loose',
         fontFamily: 'inherit',
       });

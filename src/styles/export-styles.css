@@ -2,6 +2,7 @@
 .export-container {
   position: relative;
   margin-left: auto;
+  align-self: stretch;
   z-index: 10003; /* 确保容器z-index足够高 */
 }
 

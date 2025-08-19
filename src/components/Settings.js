@@ -314,7 +314,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
       <div className="about-content">
         <div className="about-header">
           <h4>原子Markdown编辑器</h4>
-          <p className="version">版本 1.2.0</p>
+          <p className="version">版本 1.2.1</p>
         </div>
         
         <div className="version-info">
