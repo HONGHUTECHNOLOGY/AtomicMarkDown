@@ -623,9 +623,9 @@ ${htmlContent}
           <button onClick={() => insertAtCursor('# ')}>H1</button>
           <button onClick={() => insertAtCursor('## ')}>H2</button>
           <button onClick={() => insertAtCursor('### ')}>H3</button>
-          <button onClick={() => insertAtCursor('**加粗文本**')}>B</button>
-          <button onClick={() => insertAtCursor('*斜体文本*')}>I</button>
-          <button onClick={() => insertAtCursor('~~删除线文本~~')}>S</button>
+          <button onClick={() => insertAtCursor('**加粗文本**')}>粗体</button>
+          <button onClick={() => insertAtCursor('*斜体文本*')}>斜体</button>
+          <button onClick={() => insertAtCursor('~~删除线文本~~')}>删除线</button>
           <button onClick={() => insertAtCursor('> 引用文本\n')}>引用</button>
           <button onClick={() => insertAtCursor('\n```\n代码块\n```\n')}>代码块</button>
           <button onClick={() => insertAtCursor('\n---\n')}>分割线</button>
