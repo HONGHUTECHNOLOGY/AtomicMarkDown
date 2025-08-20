@@ -4,7 +4,7 @@ import { jsPDF } from 'jspdf/dist/jspdf.umd.min.js';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 
-export const Toolbar = ({ editorRef, settings }) => {  // 添加settings参数
+export const Toolbar = ({ editorRef, settings, markdown }) => {  // 添加markdown参数
   const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
   const [isChartMenuOpen, setIsChartMenuOpen] = useState(false);
   // 添加工具栏展开/收起状态
@@ -165,6 +165,14 @@ graph TD
         const timestamp = `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}-${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}${now.getSeconds().toString().padStart(2, '0')}`;
         return `markdown-${timestamp}.${extension}`;
     }
+  };
+
+  // 手动保存到localStorage
+  const saveToLocalStorage = () => {
+    // 直接使用通过props传递的markdown内容
+    localStorage.setItem('markdown', markdown);
+    // 显示保存成功的提示
+    alert('内容已保存到本地');
   };
 
   // 导出为PNG - 修复内容缺失问题
@@ -632,7 +640,7 @@ ${htmlContent}
             >
               图表 ▼
             </button>
-            <ul className={`chart-dropdown ${isChartMenuOpen ? 'show' : ''}`}>
+            <ul className="chart-dropdown ${isChartMenuOpen ? 'show' : ''}">
               {chartOptions.map((option) => (
                 <li key={option.id}>
                   <a 
@@ -650,6 +658,15 @@ ${htmlContent}
           </div>
           
           <div className="export-container" ref={exportMenuRef}>
+            {/* 保存按钮与导出按钮并排显示，添加右边距使其与其他按钮间距一致 */}
+            <button 
+              className="export-btn" 
+              onClick={saveToLocalStorage}
+              title="手动保存到本地"
+              style={{ marginRight: '5px' }}
+            >
+              保存
+            </button>
             <button 
               className="export-btn" 
               onClick={() => setIsExportMenuOpen(!isExportMenuOpen)}

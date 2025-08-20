@@ -12,6 +12,19 @@ import './styles/theme-purple.css';
 import './styles/export-styles.css';
 import './styles/chart-styles.css';
 
+// 导出默认设置
+export const defaultSettings = {
+  autoSave: true,
+  showLineNumbers: false,
+  fontSize: '14',
+  enableMermaid: true,
+  enableCodeHighlight: true,
+  mathRenderer: 'katex',
+  pngQuality: '2',
+  includeBackground: true,
+  pdfPageSize: 'a4'
+};
+
 function App() {
   // 扩展主题选项
   const [theme, setTheme] = useState('light');
@@ -19,19 +32,6 @@ function App() {
   const [settings, setSettings] = useState({}); // 初始化为空对象
   const [showSettings, setShowSettings] = useState(false);
   const editorRef = useRef(null);
-
-  // 默认设置
-  const defaultSettings = {
-    autoSave: true,
-    showLineNumbers: false,
-    fontSize: '14',
-    enableMermaid: true,
-    enableCodeHighlight: true,
-    mathRenderer: 'katex',
-    pngQuality: '2',
-    includeBackground: true,
-    pdfPageSize: 'a4'
-  };
 
   // 可用主题列表
   const availableThemes = [
@@ -74,17 +74,21 @@ function App() {
   }, []);
 
   // 自动保存到localStorage - 优化版本
+  // 修改现有的自动保存useEffect
   useEffect(() => {
-    const saveToLocalStorage = () => {
-      localStorage.setItem('markdown', markdown);
-    };
-
-    // 使用防抖避免频繁保存
-    const timeoutId = setTimeout(saveToLocalStorage, 2000);
-
-    // 清理函数会在下次markdown变化时执行
-    return () => clearTimeout(timeoutId);
-  }, [markdown]);
+    // 检查是否启用自动保存
+    if (settings.autoSave !== false) {
+      const saveToLocalStorage = () => {
+        localStorage.setItem('markdown', markdown);
+      };
+  
+      // 使用防抖避免频繁保存
+      const timeoutId = setTimeout(saveToLocalStorage, 2000);
+  
+      // 清理函数会在下次markdown变化时执行
+      return () => clearTimeout(timeoutId);
+    }
+  }, [markdown, settings.autoSave]);
 
   // 保存设置到localStorage
   // 在保存设置到localStorage的useEffect中添加调试信息
@@ -138,7 +142,7 @@ function App() {
           </button>
         </div>
       </header>
-      <Toolbar editorRef={editorRef} settings={settings} />
+      <Toolbar editorRef={editorRef} settings={settings} markdown={markdown} />
       <div className="editor-container">
         <Editor 
           ref={editorRef}
