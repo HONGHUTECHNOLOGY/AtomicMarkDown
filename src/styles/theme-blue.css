@@ -99,3 +99,13 @@
 .blue .toolbar-show-button:hover {
   background: linear-gradient(135deg, rgba(33, 150, 243, 0.9), rgba(30, 136, 229, 0.9));
 }
+
+
+/* 添加在文件末尾 */
+
+/* 蓝色主题引用样式 */
+.blue .preview blockquote {
+  border-left: 4px solid #64b5f6;
+  background-color: rgba(100, 181, 246, 0.1);
+  color: #1565c0;
+}

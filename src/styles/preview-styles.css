@@ -18,3 +18,27 @@
 .purple .preview h1 {
   color: inherit;
 }
+
+/* 添加在文件末尾 */
+
+/* Markdown引用样式 */
+.preview blockquote {
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  border-left: 4px solid #ccc;
+  background-color: rgba(0, 0, 0, 0.03);
+  color: #666;
+  font-style: italic;
+}
+
+.preview blockquote p {
+  margin: 0.5rem 0;
+}
+
+.preview blockquote p:first-child {
+  margin-top: 0;
+}
+
+.preview blockquote p:last-child {
+  margin-bottom: 0;
+}

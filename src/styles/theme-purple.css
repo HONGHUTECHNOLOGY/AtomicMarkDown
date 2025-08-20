@@ -86,3 +86,10 @@
   background-color: rgba(240, 230, 255, 0.2);
   border: 1px solid rgba(156, 39, 176, 0.2);
 }
+
+/* 紫色主题引用样式 */
+.purple .preview blockquote {
+  border-left: 4px solid #ba68c8;
+  background-color: rgba(186, 104, 200, 0.1);
+  color: #6a1b9a;
+}

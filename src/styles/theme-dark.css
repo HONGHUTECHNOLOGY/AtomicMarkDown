@@ -68,3 +68,13 @@
   background-color: rgba(40, 40, 40, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+
+/* 添加在文件末尾 */
+
+/* 暗色主题引用样式 */
+.dark .preview blockquote {
+  border-left: 4px solid #666;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #aaa;
+}

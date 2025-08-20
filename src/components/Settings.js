@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Settings.css';
+import { defaultSettings } from '../App'; // 从App.js导入默认设置
 
 const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
   const [activeMenu, setActiveMenu] = useState('basic');
@@ -13,7 +14,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
     { id: 'basic', label: '基本设置', icon: '' },
     { id: 'render', label: '渲染设置', icon: '' },
     { id: 'export', label: '导出设置', icon: '' },
-    { id: 'backup', label: '配置备份', icon: '' },
+    { id: 'backup', label: '备份与恢复', icon: '' }, // 修改这里
     { id: 'about', label: '关于我们', icon: '' }
   ];
 
@@ -183,7 +184,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
 
   const renderImportExportSettings = () => (
     <div className="settings-section">
-      <h3>配置备份</h3>
+      <h3>备份与恢复</h3> {/* 修改这里 */}
       <div className="setting-item">
         <div className="setting-label">导出配置</div>
         <p className="setting-description">将当前设置导出为配置文件，便于在其他设备上使用</p>
@@ -244,6 +245,24 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
           onClick={() => document.getElementById('import-config-input').click()}
         >
           导入配置
+        </button>
+      </div>
+      {/* 添加恢复默认设置功能 */}
+      <div className="setting-item">
+        <div className="setting-label">恢复默认设置</div>
+        <p className="setting-description">将所有设置恢复为默认值</p>
+        <button 
+          className="import-btn"  // 使用现有的import-btn样式
+          onClick={() => {
+            // 确认对话框
+            if (window.confirm('确定要恢复默认设置吗？这将覆盖您当前的所有设置。')) {
+              // 使用从App.js导入的默认设置
+              updateSettings(defaultSettings);
+              alert('已恢复默认设置！');
+            }
+          }}
+        >
+          恢复默认设置
         </button>
       </div>
     </div>
@@ -314,7 +333,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
       <div className="about-content">
         <div className="about-header">
           <h4>原子Markdown编辑器</h4>
-          <p className="version">版本 1.2.1</p>
+          <p className="version">版本 1.2.2</p>
         </div>
         
         <div className="version-info">

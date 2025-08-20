@@ -86,3 +86,10 @@
   background-color: rgba(200, 255, 200, 0.2);
   border: 1px solid rgba(76, 175, 80, 0.2);
 }
+
+/* 绿色主题引用样式 */
+.green .preview blockquote {
+  border-left: 4px solid #81c784;
+  background-color: rgba(129, 199, 132, 0.1);
+  color: #2e7d32;
+}
