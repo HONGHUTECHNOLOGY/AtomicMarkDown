@@ -112,6 +112,19 @@ function App() {
     setSettings(prev => ({ ...prev, ...newSettings }));
   };
 
+  // 在现有的useState hooks后添加
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  
+  // 添加屏幕尺寸变化的监听器
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+  
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div className={`app ${theme}`}>
       <header className="header">

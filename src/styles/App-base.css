@@ -321,3 +321,90 @@ h1 {
   color: #ff0000;
   font-style: italic;
 }
+
+/* 移动端适配媒体查询 */
+@media screen and (max-width: 768px) {
+  /* 调整主容器布局 */
+  .editor-container {
+    flex-direction: column;
+    margin: 0.5rem;
+  }
+  
+  /* 编辑器和预览区域在移动端垂直堆叠 */
+  .editor, .preview {
+    width: 100%;
+    margin: 0.2rem 0;
+  }
+  
+  /* 移除编辑器右侧边框 */
+  .editor {
+    border-right: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  /* 调整标题大小 */
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  /* 调整工具栏宽度 */
+  .toolbar {
+    width: 98%;
+    max-width: none;
+  }
+  
+  /* 工具栏按钮调整 - 修改以下部分 */
+  .toolbar-content {
+    flex-direction: row; /* 改为行布局 */
+    align-items: center; /* 居中对齐 */
+    justify-content: flex-start; /* 左对齐 */
+    flex-wrap: wrap; /* 允许换行 */
+  }
+  
+  .toolbar-content button {
+    width: auto; /* 改为自动宽度 */
+    margin-bottom: 0.3rem;
+    padding: 0.2rem 0.4rem; /* 减小内边距 */
+    font-size: 0.8rem; /* 减小字体大小 */
+    min-height: 28px; /* 减小最小高度 */
+  }
+  
+  /* 调整主题选择器和设置按钮 */
+  .header-controls {
+    gap: 0.5rem;
+  }
+  
+  .theme-selector {
+    gap: 0.3rem;
+  }
+  
+  .theme-btn, .settings-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+  }
+}
+
+/* 针对小屏幕设备的额外调整 */
+@media screen and (max-width: 480px) {
+  .header {
+    padding: 0.5rem;
+  }
+  
+  h1 {
+    font-size: 1.3rem;
+  }
+  
+  .editor, .preview {
+    padding: 0.5rem;
+  }
+  
+  .toolbar {
+    padding: 0.5rem;
+  }
+  
+  .toolbar-content button {
+    padding: 0.3rem 0.5rem; /* 稍微增加内边距以提高可点击性 */
+    font-size: 0.85rem;
+  }
+}

@@ -4,11 +4,16 @@ import { jsPDF } from 'jspdf/dist/jspdf.umd.min.js';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 
+// 检测是否为移动设备 - 改为基于页面大小检测
+const isMobileDevice = () => {
+  return window.innerWidth < 768;
+};
+
 export const Toolbar = ({ editorRef, settings, markdown }) => {  // 添加markdown参数
   const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
   const [isChartMenuOpen, setIsChartMenuOpen] = useState(false);
   // 添加工具栏展开/收起状态
-  const [isToolbarOpen, setIsToolbarOpen] = useState(true);
+  const [isToolbarOpen, setIsToolbarOpen] = useState(!isMobileDevice());
   const exportMenuRef = useRef(null);
   const chartMenuRef = useRef(null);
 
@@ -640,7 +645,7 @@ ${htmlContent}
             >
               图表 ▼
             </button>
-            <ul className="chart-dropdown ${isChartMenuOpen ? 'show' : ''}">
+            <ul className={`chart-dropdown ${isChartMenuOpen ? 'show' : ''}`}>
               {chartOptions.map((option) => (
                 <li key={option.id}>
                   <a 
