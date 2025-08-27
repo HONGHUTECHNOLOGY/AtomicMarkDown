@@ -4,11 +4,16 @@ import { jsPDF } from 'jspdf/dist/jspdf.umd.min.js';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 
+// 检测是否为移动设备 - 改为基于页面大小检测
+const isMobileDevice = () => {
+  return window.innerWidth < 768;
+};
+
 export const Toolbar = ({ editorRef, settings, markdown }) => {  // 添加markdown参数
   const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
   const [isChartMenuOpen, setIsChartMenuOpen] = useState(false);
   // 添加工具栏展开/收起状态
-  const [isToolbarOpen, setIsToolbarOpen] = useState(true);
+  const [isToolbarOpen, setIsToolbarOpen] = useState(!isMobileDevice());
   const exportMenuRef = useRef(null);
   const chartMenuRef = useRef(null);
 
@@ -623,9 +628,9 @@ ${htmlContent}
           <button onClick={() => insertAtCursor('# ')}>H1</button>
           <button onClick={() => insertAtCursor('## ')}>H2</button>
           <button onClick={() => insertAtCursor('### ')}>H3</button>
-          <button onClick={() => insertAtCursor('**加粗文本**')}>B</button>
-          <button onClick={() => insertAtCursor('*斜体文本*')}>I</button>
-          <button onClick={() => insertAtCursor('~~删除线文本~~')}>S</button>
+          <button onClick={() => insertAtCursor('**加粗文本**')}>粗体</button>
+          <button onClick={() => insertAtCursor('*斜体文本*')}>斜体</button>
+          <button onClick={() => insertAtCursor('~~删除线文本~~')}>删除线</button>
           <button onClick={() => insertAtCursor('> 引用文本\n')}>引用</button>
           <button onClick={() => insertAtCursor('\n```\n代码块\n```\n')}>代码块</button>
           <button onClick={() => insertAtCursor('\n---\n')}>分割线</button>
@@ -640,7 +645,7 @@ ${htmlContent}
             >
               图表 ▼
             </button>
-            <ul className="chart-dropdown ${isChartMenuOpen ? 'show' : ''}">
+            <ul className={`chart-dropdown ${isChartMenuOpen ? 'show' : ''}`}>
               {chartOptions.map((option) => (
                 <li key={option.id}>
                   <a 

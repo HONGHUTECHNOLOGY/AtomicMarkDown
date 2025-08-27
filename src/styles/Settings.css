@@ -1,0 +1,104 @@
+/* Settings.css - 主设置样式文件 */
+
+/* 导入拆分的样式文件 */
+@import '../styles/settings-base.css';
+@import '../styles/settings-layout.css';
+@import '../styles/settings-content.css';
+@import '../styles/settings-themes.css';
+@import '../styles/settings-responsive.css';
+
+/* 保留通用的样式定义 */
+/* 导入导出按钮样式 */
+.export-btn, .import-btn {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.export-btn:hover, .import-btn:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* 深色主题适配 */
+.dark .export-btn, .dark .import-btn {
+  background: linear-gradient(135deg, rgba(120, 120, 120, 0.6) 0%, rgba(80, 80, 80, 0.6) 100%);
+}
+
+.dark .export-btn:hover, .dark .import-btn:hover {
+  background: linear-gradient(135deg, rgba(120, 120, 120, 0.7) 0%, rgba(80, 80, 80, 0.7) 100%);
+}
+
+/* 蓝色主题适配 */
+.blue .export-btn, .blue .import-btn {
+  background: linear-gradient(135deg, rgba(100, 181, 246, 0.7) 0%, rgba(33, 150, 243, 0.7) 100%);
+}
+
+.blue .export-btn:hover, .blue .import-btn:hover {
+  background: linear-gradient(135deg, rgba(100, 181, 246, 0.8) 0%, rgba(33, 150, 243, 0.8) 100%);
+}
+
+.setting-description {
+  display: block;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+  font-weight: normal;
+}
+
+.setting-label {
+  font-weight: 500;
+  color: #374151;
+}
+
+.setting-select {
+  margin-left: auto;
+  min-width: 120px;
+}
+
+.about-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.about-header h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  color: #1e293b;
+}
+
+.version {
+  margin: 0;
+  font-size: 1.125rem;
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.about-links {
+  margin-top: 2rem;
+}
+
+.about-links p {
+  margin: 0.5rem 0;
+}
+
+.project-link,
+.github-link {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.project-link:hover,
+.github-link:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}

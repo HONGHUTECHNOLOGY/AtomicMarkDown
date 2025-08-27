@@ -1,0 +1,414 @@
+/* settings-themes.css - 主题适配样式 */
+
+/* 深色主题适配 */
+.dark .settings-header h2 {
+  color: #ffffff; /* 纯白色 */
+}
+
+/* 蓝色主题适配 */
+.blue .settings-header h2 {
+  color: #0d47a1; /* 蓝色主题保持原有颜色 */
+}
+
+/* 绿色主题适配 */
+.green .settings-header h2 {
+  color: #2e7d32; /* 绿色主题保持原有颜色 */
+}
+
+/* 紫色主题适配 */
+.purple .settings-header h2 {
+  color: #6a1b9a; /* 紫色主题保持原有颜色 */
+}
+
+.dark .settings-overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.dark .settings-modal {
+  background: #0f172a;
+  color: #e2e8f0;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.dark .settings-header {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-bottom-color: #334155;
+}
+
+.dark .settings-header h2 {
+  color: #f1f5f9;
+}
+
+.dark .close-btn {
+  background: #1e293b;
+  color: #94a3b8;
+}
+
+.dark .close-btn:hover {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+.dark .settings-sidebar {
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  border-right-color: #334155;
+}
+
+.dark .menu-item {
+  color: #cbd5e1;
+}
+
+.dark .menu-item:hover {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: #f1f5f9;
+}
+
+.dark .menu-item.active {
+  background-color: rgba(59, 130, 246, 0.25);
+  color: #60a5fa;
+}
+
+.dark .settings-content {
+  background: #0f172a;
+}
+
+.dark .setting-item {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.dark .setting-item:hover {
+  background: #334155;
+}
+
+.dark .setting-item label {
+  color: #e2e8f0;
+}
+
+.dark .setting-item select {
+  background: #1e293b;
+  color: #e2e8f0;
+  border-color: #334155;
+}
+
+.dark .setting-item select:hover {
+  border-color: #60a5fa;
+}
+
+.dark .setting-item select:focus {
+  border-color: #60a5fa;
+}
+
+.dark .setting-item select option {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+.dark .setting-description {
+  color: #94a3b8;
+}
+
+.dark .setting-label {
+  color: #cbd5e1;
+}
+
+.dark .version {
+  color: #60a5fa;
+}
+
+.dark .about-content {
+  color: #e2e8f0; /* 更亮的文字颜色 */
+}
+
+.dark .about-content h4 {
+  color: #ffffff; /* h4标题使用纯白色 */
+}
+
+.dark .about-content p {
+  color: #cbd5e1; /* 段落文字保持原有亮度 */
+}
+
+.dark .about-content a {
+  color: #93c5fd; /* 链接使用更亮的蓝色 */
+}
+
+.dark .about-content a:hover {
+  color: #bfdbfe; /* 悬停时使用更亮的蓝色 */
+}
+
+.dark .about-content .version-info {
+  background: #1e293b; /* 保持背景色不变 */
+  color: #e2e8f0; /* 文字颜色更亮 */
+}
+
+.dark .about-content .feature-list li {
+  color: #e2e8f0; /* 列表项文字更亮 */
+}
+
+.dark .about-content .feature-list li::before {
+  color: #93c5fd; /* 列表项标记使用更亮的蓝色 */
+}
+
+.dark .settings-content::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+.dark .settings-content::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+.dark .settings-content::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* 蓝色主题适配 */
+.blue .settings-header {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-bottom: 1px solid rgba(33, 150, 243, 0.2);
+}
+
+.blue .settings-header h2 {
+  color: #0d47a1;
+}
+
+.blue .settings-sidebar {
+  background: linear-gradient(180deg, #e3f2fd 0%, #bbdefb 100%);
+}
+
+.blue .menu-item {
+  color: #0d47a1;
+}
+
+.blue .menu-item:hover {
+  background-color: rgba(100, 181, 246, 0.2);
+  color: #0d47a1;
+}
+
+.blue .menu-item.active {
+  background-color: rgba(100, 181, 246, 0.3);
+  color: #0d47a1;
+}
+
+.blue .close-btn {
+  background: rgba(197, 225, 255, 0.8);
+  color: #0d47a1;
+}
+
+.blue .close-btn:hover {
+  background: rgba(165, 200, 255, 0.9);
+  color: #0d47a1;
+}
+
+.blue .settings-content {
+  background: rgba(250, 252, 255, 0.95);
+}
+
+.blue .setting-item {
+  background: rgba(250, 252, 255, 0.95);
+  border: 1px solid rgba(33, 150, 243, 0.2);
+}
+
+.blue .setting-item label {
+  color: #0d47a1;
+}
+
+.blue .setting-description {
+  color: #42a5f5;
+}
+
+/* 绿色主题适配 */
+.green .settings-header {
+  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+  border-bottom: 1px solid rgba(76, 175, 80, 0.2);
+}
+
+.green .settings-header h2 {
+  color: #2e7d32;
+}
+
+.green .settings-sidebar {
+  background: linear-gradient(180deg, #e8f5e8 0%, #c8e6c9 100%);
+}
+
+.green .menu-item {
+  color: #2e7d32;
+}
+
+.green .menu-item:hover {
+  background-color: rgba(76, 175, 80, 0.2);
+  color: #1b5e20;
+}
+
+.green .menu-item.active {
+  background-color: rgba(76, 175, 80, 0.3);
+  color: #1b5e20;
+}
+
+.green .close-btn {
+  background: rgba(200, 255, 200, 0.8);
+  color: #1b5e20;
+}
+
+.green .close-btn:hover {
+  background: rgba(165, 214, 167, 0.9);
+}
+
+.green .settings-content {
+  background: rgba(248, 255, 248, 0.95);
+}
+
+.green .setting-item {
+  background: rgba(248, 255, 248, 0.95);
+  border: 1px solid rgba(76, 175, 80, 0.2);
+}
+
+.green .setting-item label {
+  color: #2e7d32;
+}
+
+.green .setting-description {
+  color: #4caf50;
+}
+
+/* 紫色主题适配 */
+.purple .settings-header {
+  background: linear-gradient(135deg, #e8d5f2 0%, #f3e5f5 50%, #f8f0fc 100%);
+  border-bottom: 1px solid rgba(156, 39, 176, 0.2);
+}
+
+.purple .settings-header h2 {
+  color: #6a1b9a;
+}
+
+.purple .settings-sidebar {
+  background: linear-gradient(180deg, #e8d5f2 0%, #f3e5f5 100%);
+}
+
+.purple .menu-item {
+  color: #6a1b9a;
+}
+
+.purple .menu-item:hover {
+  background-color: rgba(156, 39, 176, 0.2);
+  color: #4a148c;
+}
+
+.purple .menu-item.active {
+  background-color: rgba(156, 39, 176, 0.3);
+  color: #4a148c;
+}
+
+.purple .close-btn {
+  background: rgba(240, 230, 255, 0.8);
+  color: #4a148c;
+}
+
+.purple .close-btn:hover {
+  background: rgba(230, 215, 255, 0.9);
+}
+
+.purple .settings-content {
+  background: rgba(252, 245, 255, 0.95);
+}
+
+.purple .setting-item {
+  background: rgba(252, 245, 255, 0.95);
+  border: 1px solid rgba(156, 39, 176, 0.2);
+}
+
+.purple .setting-item label {
+  color: #6a1b9a;
+}
+
+.purple .setting-description {
+  color: #9c27b0;
+}
+
+/* 深色模式关于页面样式 */
+.dark .about-content {
+  color: #e2e8f0; /* 更亮的文字颜色 */
+}
+
+.dark .about-content h4 {
+  color: #ffffff; /* h4标题使用纯白色 */
+}
+
+.dark .about-content p {
+  color: #cbd5e1; /* 段落文字保持原有亮度 */
+}
+
+.dark .about-content a {
+  color: #93c5fd; /* 链接使用更亮的蓝色 */
+}
+
+.dark .about-content a:hover {
+  color: #bfdbfe; /* 悬停时使用更亮的蓝色 */
+}
+
+.dark .about-content .version-info {
+  background: #1e293b; /* 保持背景色不变 */
+  color: #e2e8f0; /* 文字颜色更亮 */
+}
+
+.dark .about-content .feature-list li {
+  color: #e2e8f0; /* 列表项文字更亮 */
+}
+
+.dark .about-content .feature-list li::before {
+  color: #93c5fd; /* 列表项标记使用更亮的蓝色 */
+}
+
+/* 深色模式的补充样式 */
+.dark .setting-description {
+  color: #94a3b8;
+}
+
+.dark .setting-label {
+  color: #cbd5e1;
+}
+
+.dark .version {
+  color: #60a5fa;
+}
+
+/* 深色主题适配 */
+.dark .back-btn {
+  background: #1e293b;
+  color: #94a3b8;
+}
+
+.dark .back-btn:hover {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+/* 蓝色主题适配 */
+.blue .back-btn {
+  background: rgba(197, 225, 255, 0.8);
+  color: #0d47a1;
+}
+
+.blue .back-btn:hover {
+  background: rgba(165, 200, 255, 0.9);
+  color: #0d47a1;
+}
+
+/* 绿色主题适配 */
+.green .back-btn {
+  background: rgba(200, 255, 200, 0.8);
+  color: #1b5e20;
+}
+
+.green .back-btn:hover {
+  background: rgba(165, 214, 167, 0.9);
+}
+
+/* 紫色主题适配 */
+.purple .back-btn {
+  background: rgba(240, 230, 255, 0.8);
+  color: #4a148c;
+}
+
+.purple .back-btn:hover {
+  background: rgba(230, 215, 255, 0.9);
+}

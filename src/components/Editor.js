@@ -1,6 +1,7 @@
 // 在文件顶部添加worker配置
-import React, { useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
+import React, { useRef, useEffect, forwardRef, useImperativeHandle, useState } from 'react';
 import MonacoEditor from '@monaco-editor/react';
+import { isScrollProcessing, setScrollProcessing, safeScrollSync } from '../utils/scrollSync';
 
 // 配置Monaco Environment
 if (typeof window !== 'undefined' && !window.MonacoEnvironment) {
@@ -23,8 +24,10 @@ if (typeof window !== 'undefined' && !window.MonacoEnvironment) {
   };
 }
 
-const Editor = forwardRef(({ markdown, setMarkdown, theme, settings }, ref) => {  // 添加settings参数
+const Editor = forwardRef(({ markdown, setMarkdown, theme, settings, onScroll }, ref) => {  // 添加onScroll参数
   const editorRef = useRef(null);
+  const [isSyncEnabled, setIsSyncEnabled] = useState(true); // 添加同步状态控制
+  const scrollListenerRef = useRef(null); // 保存滚动监听器的引用
   // 根据当前主题设置编辑器主题
   const monacoTheme = theme === 'dark' ? 'vs-dark' : 'vs';
   const skipNextUpdate = useRef(false);
@@ -45,6 +48,68 @@ const Editor = forwardRef(({ markdown, setMarkdown, theme, settings }, ref) => {
         editor.executeEdits("toolbar-insert", [op]);
         editor.focus();
       }
+    },
+    // 添加获取滚动位置的方法
+    getScrollTop: () => {
+      if (editorRef.current) {
+        return editorRef.current.getScrollTop();
+      }
+      return 0;
+    },
+    // 添加设置滚动位置的方法
+    setScrollTop: (scrollTop) => {
+      if (editorRef.current) {
+        // 使用新的滚动同步机制
+        safeScrollSync(() => {
+          editorRef.current.setScrollTop(scrollTop);
+        });
+      }
+    },
+    // 添加获取滚动高度的方法
+    getScrollHeight: () => {
+      if (editorRef.current) {
+        // 使用getScrollHeight获取编辑器滚动高度
+        return editorRef.current.getScrollHeight();
+      }
+      return 0;
+    },
+    // 修改获取内容高度的方法
+    getContentHeight: () => {
+      if (editorRef.current) {
+        try {
+          // 使用Monaco Editor的正确API获取内容高度
+          const model = editorRef.current.getModel();
+          if (model) {
+            const lineCount = model.getLineCount();
+            // 正确获取行高选项
+            const lineHeight = editorRef.current.getOption(60); // 60是lineHeight的选项ID
+            // 返回行数*行高，确保能正确反映内容高度
+            return Math.max(lineCount * lineHeight, 1);
+          }
+          // 如果无法获取model，使用scrollHeight作为备选
+          return Math.max(editorRef.current.getScrollHeight(), 1);
+        } catch (error) {
+          console.error('获取内容高度错误:', error);
+          // 出错时返回一个默认的有效值
+          return Math.max(editorRef.current?.getScrollHeight() || 1, 1);
+        }
+      }
+      return 1;
+    },
+    // 添加获取实际可视高度的方法
+    getClientHeight: () => {
+      if (editorRef.current) {
+        try {
+          // 使用与handleEditorDidMount中相同的逻辑获取实际可视高度
+          const editorHeight = editorRef.current.getLayoutInfo()?.height || 
+                              editorRef.current.getDomNode()?.clientHeight || 300;
+          return Math.max(1, editorHeight);
+        } catch (error) {
+          console.error('获取可视高度错误:', error);
+          return 300; // 默认高度
+        }
+      }
+      return 300;
     }
   }));
 
@@ -57,9 +122,47 @@ const Editor = forwardRef(({ markdown, setMarkdown, theme, settings }, ref) => {
     }
   };
 
+  // 添加useEffect来响应settings变化
+  useEffect(() => {
+    // 根据settings.syncScroll更新同步状态
+    const shouldSync = settings && typeof settings === 'object' 
+      ? (settings.syncScroll !== false)
+      : true;
+    setIsSyncEnabled(shouldSync);
+  }, [settings]);
+
+  // 修改handleEditorDidMount中的滚动事件处理
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
     editor.focus();
+    
+    // 定义滚动事件处理函数
+    const handleScrollChange = (e) => {
+      // 使用新的滚动同步机制
+      safeScrollSync(() => {
+        // 检查同步是否启用 - 直接检查settings的当前值
+        const shouldSync = settings && typeof settings === 'object' 
+          ? (settings.syncScroll !== false)
+          : true;
+        if (!shouldSync || !onScroll) {
+          return;
+        }
+        
+        const scrollTop = editor.getScrollTop();
+        const scrollHeight = editor.getScrollHeight();
+        const editorHeight = editor.getLayoutInfo()?.height || editor.getDomNode()?.clientHeight || 300;
+        
+        onScroll({
+          scrollTop: Math.max(0, scrollTop || 0),
+          scrollHeight: Math.max(1, scrollHeight || 1),
+          height: Math.max(1, editorHeight || 1),
+          source: 'editor'
+        });
+      });
+    };
+    
+    // 保存滚动监听器引用
+    scrollListenerRef.current = editor.onDidScrollChange(handleScrollChange);
     
     // 为不同主题定义自定义颜色
     if (monaco) {
@@ -120,6 +223,58 @@ const Editor = forwardRef(({ markdown, setMarkdown, theme, settings }, ref) => {
       }
     }
   };
+
+  // 添加useEffect来动态管理滚动监听器
+  useEffect(() => {
+    // 检查同步是否启用
+    const shouldSync = settings && typeof settings === 'object' 
+      ? (settings.syncScroll !== false)
+      : true;
+    
+    // 如果编辑器已挂载
+    if (editorRef.current) {
+      // 如果应该同步但监听器不存在，则添加监听器
+      if (shouldSync && !scrollListenerRef.current) {
+        const handleScrollChange = (e) => {
+          safeScrollSync(() => {
+            const shouldSync = settings && typeof settings === 'object' 
+              ? (settings.syncScroll !== false)
+              : true;
+            if (!shouldSync || !onScroll) {
+              return;
+            }
+            
+            const editor = editorRef.current;
+            const scrollTop = editor.getScrollTop();
+            const scrollHeight = editor.getScrollHeight();
+            const editorHeight = editor.getLayoutInfo()?.height || editor.getDomNode()?.clientHeight || 300;
+            
+            onScroll({
+              scrollTop: Math.max(0, scrollTop || 0),
+              scrollHeight: Math.max(1, scrollHeight || 1),
+              height: Math.max(1, editorHeight || 1),
+              source: 'editor'
+            });
+          });
+        };
+        
+        scrollListenerRef.current = editorRef.current.onDidScrollChange(handleScrollChange);
+      }
+      // 如果不应该同步但监听器存在，则移除监听器
+      else if (!shouldSync && scrollListenerRef.current) {
+        scrollListenerRef.current.dispose();
+        scrollListenerRef.current = null;
+      }
+    }
+    
+    // 清理函数
+    return () => {
+      if (scrollListenerRef.current) {
+        scrollListenerRef.current.dispose();
+        scrollListenerRef.current = null;
+      }
+    };
+  }, [settings, onScroll]); // 依赖settings和onScroll
 
   // 优化编辑器值与状态同步
   useEffect(() => {

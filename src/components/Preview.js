@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, forwardRef } from 'react';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify/dist/purify.min.js';
 import hljs from 'highlight.js';
@@ -6,6 +6,7 @@ import 'highlight.js/styles/github.css';
 import mermaid from 'mermaid';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
+import { isScrollProcessing, setScrollProcessing, safeScrollSync } from '../utils/scrollSync';
 
 // 动态加载MathJax
 const loadMathJax = () => {
@@ -24,8 +25,10 @@ const loadMathJax = () => {
   });
 };
 
-export const Preview = ({ markdown, theme, settings }) => {
-  const previewRef = useRef(null);
+// 使用forwardRef包装组件
+export const Preview = forwardRef(({ markdown, theme, settings, onScroll }, ref) => {  // 添加ref参数
+  const previewRef = ref || useRef(null);  // 如果没有传入ref，则使用内部ref
+  const scrollHandlerRef = useRef(null); // 保存滚动处理函数的引用
 
   // 初始化mermaid
   useEffect(() => {
@@ -173,7 +176,70 @@ export const Preview = ({ markdown, theme, settings }) => {
     }
   };
 
+  // 修改handlePreviewScroll函数，使用useRef缓存最新的settings值
+  const handlePreviewScroll = () => {
+    // 直接检查最新的settings.syncScroll值
+    const isSyncScrollEnabled = settings && typeof settings === 'object' 
+      ? (settings.syncScroll !== false)
+      : true;
+    
+    if (!isSyncScrollEnabled) return;
+    
+    safeScrollSync(() => {
+      if (onScroll && previewRef.current) {
+        const scrollTop = previewRef.current.scrollTop;
+        const scrollHeight = previewRef.current.scrollHeight;
+        const clientHeight = previewRef.current.clientHeight;
+        
+        const validScrollTop = Math.max(0, scrollTop || 0);
+        const validScrollHeight = Math.max(1, scrollHeight || 1);
+        const validHeight = Math.max(1, clientHeight || 1);
+        
+        onScroll({ 
+          scrollTop: validScrollTop, 
+          scrollHeight: validScrollHeight, 
+          height: validHeight,
+          source: 'preview' 
+        });
+      }
+    });
+  };
+
+  // 正确管理滚动事件监听器的添加和移除
+  useEffect(() => {
+    const previewElement = previewRef.current;
+    if (!previewElement) return;
+
+    // 先移除旧的监听器（如果存在）
+    if (scrollHandlerRef.current) {
+      previewElement.removeEventListener('scroll', scrollHandlerRef.current);
+    }
+
+    // 根据当前设置决定是否添加监听器
+    const isSyncScrollEnabled = settings && typeof settings === 'object' 
+      ? (settings.syncScroll !== false)
+      : true;
+
+    if (isSyncScrollEnabled) {
+      // 保存当前的处理函数引用
+      scrollHandlerRef.current = handlePreviewScroll;
+      previewElement.addEventListener('scroll', handlePreviewScroll);
+    }
+
+    // 清理函数：移除监听器
+    return () => {
+      if (previewElement && scrollHandlerRef.current) {
+        previewElement.removeEventListener('scroll', scrollHandlerRef.current);
+        scrollHandlerRef.current = null;
+      }
+    };
+  }, [settings]); // 依赖settings，当设置变化时重新注册监听器
+
+  // 渲染预览内容
   return (
     <div className="preview" ref={previewRef}></div>
   );
-};
+});
+
+// 添加displayName以方便调试
+Preview.displayName = 'Preview';

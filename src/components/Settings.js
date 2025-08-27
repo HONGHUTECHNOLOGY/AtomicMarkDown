@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import './Settings.css';
+import '../styles/Settings.css';
 import { defaultSettings } from '../App'; // 从App.js导入默认设置
 
 const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
   const [activeMenu, setActiveMenu] = useState('basic');
   const [isVisible, setIsVisible] = useState(false);
   const [showAnimation, setShowAnimation] = useState(false);
+  // 添加一个状态来跟踪是否显示菜单列表（移动端二级菜单效果）
+  const [showMenuList, setShowMenuList] = useState(true);
   
   // 用于跟踪上一次活动菜单
   const [prevActiveMenu, setPrevActiveMenu] = useState(activeMenu);
@@ -24,6 +26,8 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
       // 打开时立即显示
       setIsVisible(true);
       setShowAnimation(true);
+      // 默认显示菜单列表
+      setShowMenuList(true);
     } else {
       // 关闭时先应用closing类，再延迟隐藏
       setShowAnimation(false);
@@ -65,11 +69,37 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
   };
 
   const handleMenuChange = (menuId) => {
-    if (menuId !== activeMenu) {
-      setActiveMenu(menuId);
-      setShowAnimation(true);
+    // 移除条件判断，使每次点击都能正常切换
+    setActiveMenu(menuId);
+    setShowAnimation(true);
+    // 在移动端，点击菜单项后进入具体设置页面
+    if (window.innerWidth <= 768) {
+      setShowMenuList(false);
     }
   };
+
+  // 返回菜单列表的函数
+  const handleBackToMenu = () => {
+    setShowMenuList(true);
+  };
+
+  // 渲染菜单列表（移动端二级菜单的第一级）
+  const renderMenuList = () => (
+    <div className="menu-list">
+      <h3>设置选项</h3>
+      <div className="menu-grid">
+        {menuItems.map(item => (
+          <button
+            key={item.id}
+            className="menu-grid-item"
+            onClick={() => handleMenuChange(item.id)}
+          >
+            <span className="menu-grid-text">{item.label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
 
   const renderBasicSettings = () => (
     <div className="settings-section">
@@ -94,6 +124,17 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
           />
           <span className="setting-label">显示行号</span>
           <span className="setting-description">在编辑器左侧显示行号</span>
+        </label>
+      </div>
+      <div className="setting-item">
+        <label>
+          <input 
+            type="checkbox" 
+            checked={settings.syncScroll !== false}  // 修改这里
+            onChange={(e) => handleCheckboxChange('syncScroll', e.target.checked)}
+          />
+          <span className="setting-label">同步滚动</span>
+          <span className="setting-description">编辑区域和预览区域同步滚动</span>
         </label>
       </div>
       <div className="setting-item">
@@ -377,7 +418,15 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
     </div>
   );
 
+  // 修改renderContent函数
   const renderContent = () => {
+    // 在移动端，根据showMenuList状态决定显示菜单列表还是具体设置
+    if (window.innerWidth <= 768 && showMenuList) {
+      return <div className={showAnimation ? "settings-section animated" : "settings-section"}>
+        {renderMenuList()}
+      </div>;
+    }
+    
     const contentMap = {
       basic: renderBasicSettings,
       render: renderRenderSettings,
@@ -391,28 +440,42 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
       <ContentComponent />
     </div>;
   };
-
+  
+  // 修改返回的JSX
   return (
     <div className={`settings-overlay ${isOpen ? 'open' : 'closing'}`} onClick={onClose}>
       <div className="settings-modal" onClick={(e) => e.stopPropagation()}>
         <div className="settings-header">
-          <h2>设置</h2>
+          {/* 在移动端且不在菜单列表时，显示返回按钮 */}
+          {window.innerWidth <= 768 && !showMenuList ? (
+            <button className="back-btn" onClick={handleBackToMenu} aria-label="返回">←</button>
+          ) : (
+            <h2>设置</h2>
+          )}
           <button className="close-btn" onClick={onClose} aria-label="关闭">×</button>
         </div>
         <div className="settings-body">
-          <nav className="settings-sidebar">
-            {menuItems.map(item => (
-              <button
-                key={item.id}
-                className={`menu-item ${activeMenu === item.id ? 'active' : ''}`}
-                onClick={() => handleMenuChange(item.id)}
-                aria-current={activeMenu === item.id ? 'page' : undefined}
-              >
-                <span className="menu-icon" aria-hidden="true">{item.icon}</span>
-                <span className="menu-text">{item.label}</span>
-              </button>
-            ))}
-          </nav>
+          {/* 在非移动端或显示菜单列表时，显示侧边栏 */}
+          {(window.innerWidth > 768 || (window.innerWidth <= 768 && showMenuList)) && (
+            window.innerWidth > 768 ? (
+              <nav className="settings-sidebar">
+                {menuItems.map(item => (
+                  <button
+                    key={item.id}
+                    className={`menu-item ${activeMenu === item.id ? 'active' : ''}`}
+                    onClick={() => handleMenuChange(item.id)}
+                    aria-current={activeMenu === item.id ? 'page' : undefined}
+                  >
+                    <span className="menu-icon" aria-hidden="true">{item.icon}</span>
+                    <span className="menu-text">{item.label}</span>
+                  </button>
+                ))}
+              </nav>
+            ) : (
+              // 在移动端且显示菜单列表时，不显示侧边栏，而是在内容区域显示菜单列表
+              null
+            )
+          )}
           <main className="settings-content">
             {renderContent()}
           </main>
