@@ -1,6 +1,7 @@
 // 在文件顶部添加worker配置
 import React, { useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
 import MonacoEditor from '@monaco-editor/react';
+import { isScrollProcessing, setScrollProcessing, safeScrollSync } from '../utils/scrollSync';
 
 // 配置Monaco Environment
 if (typeof window !== 'undefined' && !window.MonacoEnvironment) {
@@ -23,7 +24,7 @@ if (typeof window !== 'undefined' && !window.MonacoEnvironment) {
   };
 }
 
-const Editor = forwardRef(({ markdown, setMarkdown, theme, settings }, ref) => {  // 添加settings参数
+const Editor = forwardRef(({ markdown, setMarkdown, theme, settings, onScroll }, ref) => {  // 添加onScroll参数
   const editorRef = useRef(null);
   // 根据当前主题设置编辑器主题
   const monacoTheme = theme === 'dark' ? 'vs-dark' : 'vs';
@@ -45,6 +46,68 @@ const Editor = forwardRef(({ markdown, setMarkdown, theme, settings }, ref) => {
         editor.executeEdits("toolbar-insert", [op]);
         editor.focus();
       }
+    },
+    // 添加获取滚动位置的方法
+    getScrollTop: () => {
+      if (editorRef.current) {
+        return editorRef.current.getScrollTop();
+      }
+      return 0;
+    },
+    // 添加设置滚动位置的方法
+    setScrollTop: (scrollTop) => {
+      if (editorRef.current) {
+        // 使用新的滚动同步机制
+        safeScrollSync(() => {
+          editorRef.current.setScrollTop(scrollTop);
+        });
+      }
+    },
+    // 添加获取滚动高度的方法
+    getScrollHeight: () => {
+      if (editorRef.current) {
+        // 使用getScrollHeight获取编辑器滚动高度
+        return editorRef.current.getScrollHeight();
+      }
+      return 0;
+    },
+    // 修改获取内容高度的方法
+    getContentHeight: () => {
+      if (editorRef.current) {
+        try {
+          // 使用Monaco Editor的正确API获取内容高度
+          const model = editorRef.current.getModel();
+          if (model) {
+            const lineCount = model.getLineCount();
+            // 正确获取行高选项
+            const lineHeight = editorRef.current.getOption(60); // 60是lineHeight的选项ID
+            // 返回行数*行高，确保能正确反映内容高度
+            return Math.max(lineCount * lineHeight, 1);
+          }
+          // 如果无法获取model，使用scrollHeight作为备选
+          return Math.max(editorRef.current.getScrollHeight(), 1);
+        } catch (error) {
+          console.error('获取内容高度错误:', error);
+          // 出错时返回一个默认的有效值
+          return Math.max(editorRef.current?.getScrollHeight() || 1, 1);
+        }
+      }
+      return 1;
+    },
+    // 添加获取实际可视高度的方法
+    getClientHeight: () => {
+      if (editorRef.current) {
+        try {
+          // 使用与handleEditorDidMount中相同的逻辑获取实际可视高度
+          const editorHeight = editorRef.current.getLayoutInfo()?.height || 
+                              editorRef.current.getDomNode()?.clientHeight || 300;
+          return Math.max(1, editorHeight);
+        } catch (error) {
+          console.error('获取可视高度错误:', error);
+          return 300; // 默认高度
+        }
+      }
+      return 300;
     }
   }));
 
@@ -57,9 +120,40 @@ const Editor = forwardRef(({ markdown, setMarkdown, theme, settings }, ref) => {
     }
   };
 
+  
+  // 确保handleEditorDidMount函数中的滚动事件监听器正确实现
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
     editor.focus();
+    
+    // 添加滚动事件监听 - 优化版本
+    editor.onDidScrollChange((e) => {
+      // 使用新的滚动同步机制
+      safeScrollSync(() => {
+        // 更可靠的检查逻辑
+        const isSyncScrollEnabled = settings && typeof settings === 'object' 
+          ? (settings.syncScroll !== false)  // 默认启用，除非明确禁用
+          : true;
+        
+        if (!isSyncScrollEnabled || !onScroll) {
+          return;
+        }
+        
+        const scrollTop = editor.getScrollTop();
+        const scrollHeight = editor.getScrollHeight();
+        
+        // 关键修复：使用编辑器的实际可视高度而不是理论内容高度
+        const editorHeight = editor.getLayoutInfo()?.height || editor.getDomNode()?.clientHeight || 300;
+        
+        // 调用滚动回调函数
+        onScroll({
+          scrollTop: Math.max(0, scrollTop || 0),
+          scrollHeight: Math.max(1, scrollHeight || 1),
+          height: Math.max(1, editorHeight || 1),  // 使用实际可视高度
+          source: 'editor'
+        });
+      });
+    });
     
     // 为不同主题定义自定义颜色
     if (monaco) {

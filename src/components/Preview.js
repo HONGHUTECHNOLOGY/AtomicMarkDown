@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, forwardRef } from 'react';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify/dist/purify.min.js';
 import hljs from 'highlight.js';
@@ -6,6 +6,7 @@ import 'highlight.js/styles/github.css';
 import mermaid from 'mermaid';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
+import { isScrollProcessing, setScrollProcessing, safeScrollSync } from '../utils/scrollSync';
 
 // 动态加载MathJax
 const loadMathJax = () => {
@@ -24,8 +25,9 @@ const loadMathJax = () => {
   });
 };
 
-export const Preview = ({ markdown, theme, settings }) => {
-  const previewRef = useRef(null);
+// 使用forwardRef包装组件
+export const Preview = forwardRef(({ markdown, theme, settings, onScroll }, ref) => {  // 添加ref参数
+  const previewRef = ref || useRef(null);  // 如果没有传入ref，则使用内部ref
 
   // 初始化mermaid
   useEffect(() => {
@@ -173,7 +175,81 @@ export const Preview = ({ markdown, theme, settings }) => {
     }
   };
 
+  // 添加滚动事件处理
+  // 修改handlePreviewScroll函数
+  const handlePreviewScroll = () => {
+    // 使用新的滚动同步机制
+    safeScrollSync(() => {
+      // 更完善的检查逻辑
+      const isSyncScrollEnabled = settings && typeof settings === 'object' 
+        ? (settings.syncScroll !== false)  // 默认启用，除非明确禁用
+        : true;
+      
+      if (isSyncScrollEnabled && onScroll && previewRef.current) {
+        const scrollTop = previewRef.current.scrollTop;
+        const scrollHeight = previewRef.current.scrollHeight;
+        const clientHeight = previewRef.current.clientHeight; // 获取实际可视高度
+        
+        // 确保所有值都是有效的数字
+        const validScrollTop = Math.max(0, scrollTop || 0);
+        const validScrollHeight = Math.max(1, scrollHeight || 1);
+        const validHeight = Math.max(1, clientHeight || 1); // 使用实际可视高度
+        
+        onScroll({ 
+          scrollTop: validScrollTop, 
+          scrollHeight: validScrollHeight, 
+          height: validHeight,  // 修复：使用实际可视高度而不是理论内容高度
+          source: 'preview' 
+        });
+      }
+    });
+  };
+
+  // 修改useEffect中的依赖项
+  useEffect(() => {
+    // 更完善的检查逻辑，确保能正确获取到syncScroll的值
+    const isSyncScrollEnabled = settings && typeof settings === 'object' 
+      ? (settings.syncScroll !== false)  // 默认启用，除非明确禁用
+      : true;
+    
+    if (previewRef.current) {
+      // 先移除之前的事件监听器
+      previewRef.current.removeEventListener('scroll', handlePreviewScroll);
+      
+      // 如果同步滚动启用，则添加事件监听器
+      if (isSyncScrollEnabled) {
+        previewRef.current.addEventListener('scroll', handlePreviewScroll);
+      }
+      
+      // 返回清理函数
+      return () => {
+        if (previewRef.current) {
+          previewRef.current.removeEventListener('scroll', handlePreviewScroll);
+        }
+      };
+    }
+  }, [settings]); // 依赖settings而不是settings?.syncScroll
+  
+  // 处理来自其他组件的滚动事件
+  useEffect(() => {
+    // 更完善的检查逻辑，确保能正确获取到syncScroll的值
+    let isSyncScrollEnabled = true; // 默认启用
+    
+    // 如果settings存在且syncScroll属性存在，则使用实际值
+    if (settings && typeof settings === 'object' && 'syncScroll' in settings) {
+      isSyncScrollEnabled = settings.syncScroll === true;
+    }
+    
+    if (!isSyncScrollEnabled || !previewRef.current) return;
+    
+    // 这里将在App.js中实现滚动同步逻辑
+  }, [settings]); // 依赖settings而不是settings?.syncScroll
+
+  // 渲染预览内容
   return (
     <div className="preview" ref={previewRef}></div>
   );
-};
+});
+
+// 添加displayName以方便调试
+Preview.displayName = 'Preview';

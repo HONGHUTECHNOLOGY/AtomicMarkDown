@@ -128,6 +128,17 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
       </div>
       <div className="setting-item">
         <label>
+          <input 
+            type="checkbox" 
+            checked={settings.syncScroll !== false}  // 新增同步滚动设置
+            onChange={(e) => handleCheckboxChange('syncScroll', e.target.checked)}
+          />
+          <span className="setting-label">同步滚动</span>
+          <span className="setting-description">编辑区域和预览区域同步滚动</span>
+        </label>
+      </div>
+      <div className="setting-item">
+        <label>
           <span className="setting-label">字体大小</span>
           <select 
             value={settings.fontSize || '14'}
