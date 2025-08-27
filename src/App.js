@@ -39,7 +39,8 @@ function App() {
   // 添加滚动同步状态
   const scrollState = useRef({
     isSyncing: false,
-    source: null
+    source: null,
+    disablePreviewSync: false // 新增：临时禁用预览区同步的标志
   });
 
   // 可用主题列表
@@ -136,8 +137,15 @@ function App() {
   }, []);
   
   // 处理滚动同步 - 改进的防循环触发机制
-  // 处理滚动同步 - 实现真正的单向滚动同步
   const handleScroll = ({ scrollTop, scrollHeight, height, source }) => {
+    // 检查同步滚动设置，如果关闭则直接返回
+    if (settings && settings.syncScroll === false) {
+      // 确保同步状态被正确重置
+      scrollState.current.isSyncing = false;
+      scrollState.current.source = null;
+      return; // 立即返回，不执行后续同步逻辑
+    }
+    
     // 使用更精确的防循环机制 - 检查是否正在处理来自同一源的滚动
     if (scrollState.current.isSyncing) {
       return;
@@ -170,15 +178,14 @@ function App() {
           return;
         }
         
-        // 临时禁用预览区的滚动事件监听器，防止反向触发
-        const previewScrollHandler = previewRef.current.onscroll;
-        previewRef.current.onscroll = null;
+        // 使用标志位来临时禁用预览区的滚动同步，而不是操作DOM属性
+        scrollState.current.disablePreviewSync = true;
         
         try {
           // 从编辑器同步到预览区 - 使用理论内容高度计算滚动比例
           const previewScrollHeight = Math.max(1, previewRef.current.scrollHeight || 0);
           const previewHeight = Math.max(1, previewRef.current.clientHeight || 0);
-          const previewMaxScroll = Math.max(0, previewScrollHeight - previewHeight); // 修正：使用scrollHeight - clientHeight
+          const previewMaxScroll = Math.max(0, previewScrollHeight - previewHeight);
           
           // 使用相同的滚动比例计算逻辑
           let previewScrollTop;
@@ -193,17 +200,19 @@ function App() {
           
           previewRef.current.scrollTop = previewScrollTop;
         } finally {
-          // 重新启用预览区的滚动事件监听器
+          // 重新启用预览区的滚动同步
           setTimeout(() => {
-            if (previewRef.current) {
-              previewRef.current.onscroll = previewScrollHandler;
-            }
+            scrollState.current.disablePreviewSync = false;
           }, 50);
         }
       } else if (source === 'preview' && editorRef.current) {
+        // 检查是否临时禁用了预览区同步
+        if (scrollState.current.disablePreviewSync) {
+          return;
+        }
+        
         // 从预览区同步到编辑器 - 使用与编辑区到预览区相同的计算方法
         const editorScrollHeight = Math.max(1, editorRef.current.getScrollHeight() || 1);
-        // 修复：使用实际可视高度而不是理论内容高度
         const editorHeight = Math.max(1, editorRef.current.getClientHeight() || 300);
         const editorMaxScroll = Math.max(0, editorScrollHeight - editorHeight);
         
@@ -226,7 +235,7 @@ function App() {
       setTimeout(() => {
         scrollState.current.isSyncing = false;
         scrollState.current.source = null;
-      }, 20); // 从100ms改为20ms
+      }, 20);
     }
   };
 

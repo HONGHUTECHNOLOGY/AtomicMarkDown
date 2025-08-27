@@ -130,7 +130,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
         <label>
           <input 
             type="checkbox" 
-            checked={settings.syncScroll !== false}  // 新增同步滚动设置
+            checked={settings.syncScroll !== false}  // 修改这里
             onChange={(e) => handleCheckboxChange('syncScroll', e.target.checked)}
           />
           <span className="setting-label">同步滚动</span>

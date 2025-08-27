@@ -1,5 +1,5 @@
 // 在文件顶部添加worker配置
-import React, { useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
+import React, { useRef, useEffect, forwardRef, useImperativeHandle, useState } from 'react';
 import MonacoEditor from '@monaco-editor/react';
 import { isScrollProcessing, setScrollProcessing, safeScrollSync } from '../utils/scrollSync';
 
@@ -26,6 +26,8 @@ if (typeof window !== 'undefined' && !window.MonacoEnvironment) {
 
 const Editor = forwardRef(({ markdown, setMarkdown, theme, settings, onScroll }, ref) => {  // 添加onScroll参数
   const editorRef = useRef(null);
+  const [isSyncEnabled, setIsSyncEnabled] = useState(true); // 添加同步状态控制
+  const scrollListenerRef = useRef(null); // 保存滚动监听器的引用
   // 根据当前主题设置编辑器主题
   const monacoTheme = theme === 'dark' ? 'vs-dark' : 'vs';
   const skipNextUpdate = useRef(false);
@@ -120,40 +122,47 @@ const Editor = forwardRef(({ markdown, setMarkdown, theme, settings, onScroll },
     }
   };
 
-  
-  // 确保handleEditorDidMount函数中的滚动事件监听器正确实现
+  // 添加useEffect来响应settings变化
+  useEffect(() => {
+    // 根据settings.syncScroll更新同步状态
+    const shouldSync = settings && typeof settings === 'object' 
+      ? (settings.syncScroll !== false)
+      : true;
+    setIsSyncEnabled(shouldSync);
+  }, [settings]);
+
+  // 修改handleEditorDidMount中的滚动事件处理
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
     editor.focus();
     
-    // 添加滚动事件监听 - 优化版本
-    editor.onDidScrollChange((e) => {
+    // 定义滚动事件处理函数
+    const handleScrollChange = (e) => {
       // 使用新的滚动同步机制
       safeScrollSync(() => {
-        // 更可靠的检查逻辑
-        const isSyncScrollEnabled = settings && typeof settings === 'object' 
-          ? (settings.syncScroll !== false)  // 默认启用，除非明确禁用
+        // 检查同步是否启用 - 直接检查settings的当前值
+        const shouldSync = settings && typeof settings === 'object' 
+          ? (settings.syncScroll !== false)
           : true;
-        
-        if (!isSyncScrollEnabled || !onScroll) {
+        if (!shouldSync || !onScroll) {
           return;
         }
         
         const scrollTop = editor.getScrollTop();
         const scrollHeight = editor.getScrollHeight();
-        
-        // 关键修复：使用编辑器的实际可视高度而不是理论内容高度
         const editorHeight = editor.getLayoutInfo()?.height || editor.getDomNode()?.clientHeight || 300;
         
-        // 调用滚动回调函数
         onScroll({
           scrollTop: Math.max(0, scrollTop || 0),
           scrollHeight: Math.max(1, scrollHeight || 1),
-          height: Math.max(1, editorHeight || 1),  // 使用实际可视高度
+          height: Math.max(1, editorHeight || 1),
           source: 'editor'
         });
       });
-    });
+    };
+    
+    // 保存滚动监听器引用
+    scrollListenerRef.current = editor.onDidScrollChange(handleScrollChange);
     
     // 为不同主题定义自定义颜色
     if (monaco) {
@@ -214,6 +223,58 @@ const Editor = forwardRef(({ markdown, setMarkdown, theme, settings, onScroll },
       }
     }
   };
+
+  // 添加useEffect来动态管理滚动监听器
+  useEffect(() => {
+    // 检查同步是否启用
+    const shouldSync = settings && typeof settings === 'object' 
+      ? (settings.syncScroll !== false)
+      : true;
+    
+    // 如果编辑器已挂载
+    if (editorRef.current) {
+      // 如果应该同步但监听器不存在，则添加监听器
+      if (shouldSync && !scrollListenerRef.current) {
+        const handleScrollChange = (e) => {
+          safeScrollSync(() => {
+            const shouldSync = settings && typeof settings === 'object' 
+              ? (settings.syncScroll !== false)
+              : true;
+            if (!shouldSync || !onScroll) {
+              return;
+            }
+            
+            const editor = editorRef.current;
+            const scrollTop = editor.getScrollTop();
+            const scrollHeight = editor.getScrollHeight();
+            const editorHeight = editor.getLayoutInfo()?.height || editor.getDomNode()?.clientHeight || 300;
+            
+            onScroll({
+              scrollTop: Math.max(0, scrollTop || 0),
+              scrollHeight: Math.max(1, scrollHeight || 1),
+              height: Math.max(1, editorHeight || 1),
+              source: 'editor'
+            });
+          });
+        };
+        
+        scrollListenerRef.current = editorRef.current.onDidScrollChange(handleScrollChange);
+      }
+      // 如果不应该同步但监听器存在，则移除监听器
+      else if (!shouldSync && scrollListenerRef.current) {
+        scrollListenerRef.current.dispose();
+        scrollListenerRef.current = null;
+      }
+    }
+    
+    // 清理函数
+    return () => {
+      if (scrollListenerRef.current) {
+        scrollListenerRef.current.dispose();
+        scrollListenerRef.current = null;
+      }
+    };
+  }, [settings, onScroll]); // 依赖settings和onScroll
 
   // 优化编辑器值与状态同步
   useEffect(() => {
