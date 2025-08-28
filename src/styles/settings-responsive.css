@@ -1,295 +1,120 @@
-/* settings-responsive.css - 响应式设计和移动端动画美化 */
+/* settings-responsive.css - 响应式设计 */
 
-/* 移动端专用动画关键帧 */
-@keyframes slideInFromBottom {
-  from {
-    opacity: 0;
-    transform: translateY(100%) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes slideOutToBottom {
-  from {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(100%) scale(0.95);
-  }
-}
-
-@keyframes slideInFromRight {
-  from {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideOutToRight {
-  from {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-}
-
-@keyframes slideInFromLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideOutToLeft {
-  from {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-}
-
-@keyframes fadeScaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes fadeScaleOut {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-}
-
-/* 移动端遮罩动画优化 */
+/* 响应式设计 */
 @media (max-width: 768px) {
-  .settings-overlay {
-    backdrop-filter: blur(8px);
-    background-color: rgba(0, 0, 0, 0.5);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  
   .settings-modal {
     width: 100%;
     height: 100%;
     max-height: none;
-    border-radius: 24px 24px 0 0;
-    animation: slideInFromBottom 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    will-change: transform, opacity;
+    border-radius: 0;
   }
   
-  .settings-overlay.closing .settings-modal {
-    animation: slideOutToBottom 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  }
-  
-  .settings-header {
-    padding: 1.5rem 1.5rem 1rem;
-    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-    border-bottom: 1px solid rgba(229, 231, 235, 0.8);
-    backdrop-filter: blur(10px);
+  .settings-sidebar {
+    width: 180px;
   }
   
   .settings-content {
     padding: 1.5rem;
-    animation: fadeScaleIn 0.3s ease-out;
+  }
+}
+
+@media (max-width: 640px) {
+  .settings-body {
+    flex-direction: column;
   }
   
-  /* 移动端菜单网格动画 */
+  .settings-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 1rem;
+  }
+  
+  .menu-item {
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* 移动端菜单列表样式 */
+@media (max-width: 768px) {
+  .settings-modal {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    border-radius: 0;
+    animation: slideInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  
+  .settings-header {
+    padding: 1rem 1.5rem;
+    animation: fadeInDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+  }
+  
+  .settings-body {
+    flex-direction: column;
+    animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+  }
+  
+  .settings-content {
+    padding: 1rem;
+    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+  }
+  
   .menu-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
   }
   
+  /* 移动端菜单项逐个弹出动画 */
   .menu-grid-item {
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-    border: 1px solid rgba(229, 231, 235, 0.8);
-    border-radius: 16px;
-    padding: 1.75rem 1.25rem;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: fadeScaleIn 0.4s ease-out;
-    animation-fill-mode: both;
-    will-change: transform, box-shadow;
-    backdrop-filter: blur(10px);
+    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
   
-  .menu-grid-item:nth-child(1) { animation-delay: 0.05s; }
-  .menu-grid-item:nth-child(2) { animation-delay: 0.1s; }
-  .menu-grid-item:nth-child(3) { animation-delay: 0.15s; }
-  .menu-grid-item:nth-child(4) { animation-delay: 0.2s; }
-  .menu-grid-item:nth-child(5) { animation-delay: 0.25s; }
+  .menu-grid-item:nth-child(1) { animation-delay: 0.1s; }
+  .menu-grid-item:nth-child(2) { animation-delay: 0.2s; }
+  .menu-grid-item:nth-child(3) { animation-delay: 0.3s; }
+  .menu-grid-item:nth-child(4) { animation-delay: 0.4s; }
+  .menu-grid-item:nth-child(5) { animation-delay: 0.5s; }
+  .menu-grid-item:nth-child(6) { animation-delay: 0.6s; }
   
-  .menu-grid-item:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
-  }
-  
-  .menu-grid-item:active {
-    transform: translateY(-2px) scale(1.01);
-    transition: all 0.1s ease;
-  }
-  
-  .menu-grid-text {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #1e293b;
-    text-align: center;
-    transition: color 0.3s ease;
-  }
-  
-  /* 设置内容页面切换动画 */
-  .settings-section {
-    animation: slideInFromRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-  
-  .settings-section.animated {
-    animation: slideInFromRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  
-  /* 返回按钮动画 */
-  .back-btn {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background: rgba(241, 245, 249, 0.8);
-    backdrop-filter: blur(10px);
-  }
-  
-  .back-btn:hover {
-    transform: translateX(-4px);
-    background: rgba(226, 232, 240, 0.9);
-  }
-  
-  /* 关闭按钮动画优化 */
-  .close-btn {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background: rgba(241, 245, 249, 0.8);
-    backdrop-filter: blur(10px);
-  }
-  
-  .close-btn:hover {
-    transform: rotate(180deg) scale(1.1);
-    background: rgba(226, 232, 240, 0.9);
-  }
-  
-  /* 设置项动画优化 */
-  .setting-item {
-    animation: fadeScaleIn 0.3s ease-out;
-    animation-fill-mode: both;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  .setting-item:nth-child(1) { animation-delay: 0.1s; }
-  .setting-item:nth-child(2) { animation-delay: 0.15s; }
-  .setting-item:nth-child(3) { animation-delay: 0.2s; }
-  .setting-item:nth-child(4) { animation-delay: 0.25s; }
-  .setting-item:nth-child(5) { animation-delay: 0.3s; }
-  
-  .setting-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  /* 当显示菜单列表时，调整内容区域样式 */
+  .settings-content.menu-list-view {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 }
 
 /* 小屏幕设备进一步调整 */
 @media (max-width: 480px) {
-  .settings-modal {
-    border-radius: 20px 20px 0 0;
-  }
-  
-  .settings-header {
-    padding: 1.25rem 1.25rem 0.75rem;
-  }
-  
-  .settings-content {
-    padding: 1.25rem;
-  }
-  
   .menu-grid-item {
     padding: 1.5rem 1rem;
-    border-radius: 14px;
+  }
+  
+  .menu-grid-icon {
+    font-size: 1.75rem;
+    width: 45px;
+    height: 45px;
   }
   
   .menu-grid-text {
     font-size: 0.9375rem;
   }
-  
-  .setting-item {
-    padding: 1rem;
-    border-radius: 12px;
-  }
 }
 
 /* 超小屏幕设备调整 */
 @media (max-width: 360px) {
-  .settings-modal {
-    border-radius: 16px 16px 0 0;
-  }
-  
-  .settings-header {
-    padding: 1rem 1rem 0.5rem;
-  }
-  
-  .settings-content {
-    padding: 1rem;
-  }
-  
   .menu-grid-item {
     padding: 1.25rem 0.75rem;
-    border-radius: 12px;
+  }
+  
+  .menu-grid-icon {
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
   }
   
   .menu-grid-text {
     font-size: 0.875rem;
-  }
-  
-  .setting-item {
-    padding: 0.875rem;
-    border-radius: 10px;
-  }
-}
-
-/* 横屏模式优化 */
-@media (max-width: 768px) and (orientation: landscape) {
-  .settings-modal {
-    border-radius: 24px;
-    max-height: 90vh;
-  }
-  
-  .settings-content {
-    max-height: 60vh;
-    overflow-y: auto;
-  }
-  
-  .menu-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
   }
 }

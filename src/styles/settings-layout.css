@@ -36,6 +36,32 @@
   will-change: transform, background-color; /* 声明动画属性 */
 }
 
+/* 菜单项微光效果 */
+.menu-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  border-radius: 8px;
+}
+
+.menu-item:hover::before {
+  opacity: 1;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
 .menu-item:hover {
   background-color: rgba(59, 130, 246, 0.1);
   color: #1e293b;

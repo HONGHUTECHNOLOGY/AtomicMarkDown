@@ -232,6 +232,7 @@
 /* 移动端菜单列表样式 */
 .menu-list {
   padding: 1rem;
+  animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .menu-list h3 {
@@ -239,6 +240,7 @@
   margin-bottom: 1.5rem;
   color: #1e293b;
   font-size: 1.25rem;
+  animation: slideInDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
 }
 
 /* 深色模式下的菜单列表标题 */
@@ -261,29 +263,44 @@
   border: 1px solid #e2e8f0;
   border-radius: 12px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   font-weight: 500;
   color: #374151;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   height: 60px;
   position: relative;
   overflow: hidden;
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   /* 添加触摸设备优化 */
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
+  /* 背景渐变过渡优化 */
+  background-size: 200% 200%;
+  background-position: 0% 0%;
 }
+
+/* 菜单项交错动画 */
+.menu-grid-item:nth-child(1) { animation-delay: 0.1s; }
+.menu-grid-item:nth-child(2) { animation-delay: 0.15s; }
+.menu-grid-item:nth-child(3) { animation-delay: 0.2s; }
+.menu-grid-item:nth-child(4) { animation-delay: 0.25s; }
+.menu-grid-item:nth-child(5) { animation-delay: 0.3s; }
 
 .menu-grid-item:hover {
   background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-position: 100% 100%;
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  filter: brightness(1.05);
 }
 
 .menu-grid-item:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   animation: menuClick 0.3s ease-out;
 }
 
@@ -291,13 +308,52 @@
 @keyframes menuClick {
   0% {
     transform: scale(1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
   50% {
     transform: scale(0.95);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   }
   100% {
     transform: scale(1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
+}
+
+/* 微光效果动画 */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* 悬停微光效果 */
+.menu-grid-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  border-radius: 12px;
+}
+
+.menu-grid-item:hover::before {
+  opacity: 1;
+  animation: shimmer 1.5s ease-in-out infinite;
 }
 
 /* 深色模式下的菜单网格项 */
@@ -310,7 +366,9 @@
 
 .dark .menu-grid-item:hover {
   background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  background-position: 100% 100%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  filter: brightness(1.1);
 }
 
 /* 为触摸设备添加额外的点击反馈 */
@@ -405,7 +463,9 @@
 
 .blue .menu-grid-item:hover {
   background: linear-gradient(135deg, #bbdefb 0%, #90caf9 100%);
-  box-shadow: 0 4px 8px rgba(33, 150, 243, 0.2);
+  background-position: 100% 100%;
+  box-shadow: 0 8px 16px rgba(33, 150, 243, 0.3);
+  filter: brightness(1.05);
 }
 
 .green .menu-grid-item {
@@ -416,7 +476,9 @@
 
 .green .menu-grid-item:hover {
   background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
-  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2);
+  background-position: 100% 100%;
+  box-shadow: 0 8px 16px rgba(76, 175, 80, 0.3);
+  filter: brightness(1.05);
 }
 
 .purple .menu-grid-item {
@@ -427,5 +489,7 @@
 
 .purple .menu-grid-item:hover {
   background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
-  box-shadow: 0 4px 8px rgba(156, 39, 176, 0.2);
+  background-position: 100% 100%;
+  box-shadow: 0 8px 16px rgba(156, 39, 176, 0.3);
+  filter: brightness(1.05);
 }
