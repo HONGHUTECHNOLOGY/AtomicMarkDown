@@ -40,7 +40,7 @@ function App() {
   const scrollState = useRef({
     isSyncing: false,
     source: null,
-    disablePreviewSync: false // 新增：临时禁用预览区同步的标志
+    lastSyncTime: 0 // 新增：记录最后一次同步的时间戳
   });
 
   // 可用主题列表
@@ -178,9 +178,6 @@ function App() {
           return;
         }
         
-        // 使用标志位来临时禁用预览区的滚动同步，而不是操作DOM属性
-        scrollState.current.disablePreviewSync = true;
-        
         try {
           // 从编辑器同步到预览区 - 使用理论内容高度计算滚动比例
           const previewScrollHeight = Math.max(1, previewRef.current.scrollHeight || 0);
@@ -200,14 +197,12 @@ function App() {
           
           previewRef.current.scrollTop = previewScrollTop;
         } finally {
-          // 重新启用预览区的滚动同步
-          setTimeout(() => {
-            scrollState.current.disablePreviewSync = false;
-          }, 50);
+          // 记录同步完成时间
+          scrollState.current.lastSyncTime = Date.now();
         }
       } else if (source === 'preview' && editorRef.current) {
-        // 检查是否临时禁用了预览区同步
-        if (scrollState.current.disablePreviewSync) {
+        // 检查是否在短时间内刚完成同步，防止循环触发
+        if (Date.now() - scrollState.current.lastSyncTime < 100) {
           return;
         }
         
