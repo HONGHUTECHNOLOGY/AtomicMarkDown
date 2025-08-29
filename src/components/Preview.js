@@ -46,7 +46,7 @@ export const Preview = forwardRef(({ markdown, theme, settings, onScroll }, ref)
   useEffect(() => {
     const markedOptions = {
       breaks: true,
-      gfm: true,
+      gfm: settings?.enableTaskLists !== false, // 根据设置动态启用GitHub Flavored Markdown
     };
 
     if (settings?.enableCodeHighlight !== false) {
