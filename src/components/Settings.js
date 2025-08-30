@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../styles/Settings.css';
 import { defaultSettings } from '../App'; // 从App.js导入默认设置
 
-const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
+const Settings = ({ isOpen, onClose, settings, updateSettings, theme }) => {
   const [activeMenu, setActiveMenu] = useState('basic');
   const [isVisible, setIsVisible] = useState(false);
   const [showAnimation, setShowAnimation] = useState(false);
@@ -374,7 +374,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
       <div className="about-content">
         <div className="about-header">
           <h4>原子Markdown编辑器</h4>
-          <p className="version">版本 1.3.2</p>
+          <p className="version">版本 1.3.5</p>
         </div>
         
         <div className="version-info">
@@ -386,7 +386,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
             <li>代码高亮</li>
             <li>KateX(LateX)数学公式渲染</li>
             <li>多种格式导出</li>
-            <li>自动保存功能</li>
+            <li>同步滚动功能</li>
           </ul>
         </div>
         
@@ -395,7 +395,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
             <strong>开发者：</strong>鸿鹄科技
           </p>
           <p>
-            <strong>技术栈：</strong>React 19 + Monaco Editor + Mermaid
+            <strong>技术栈：</strong>React 19 + Monaco Editor + Mermaid + KateX
           </p>
           <p>
             <a href="https://gitee.com/honghutechnology/AtomicMarkDown" 
@@ -443,7 +443,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
   
   // 修改返回的JSX
   return (
-    <div className={`settings-overlay ${isOpen ? 'open' : 'closing'}`} onClick={onClose}>
+    <div className={`settings-overlay ${isOpen ? 'open' : 'closing'} ${theme}`} onClick={onClose}>
       <div className="settings-modal" onClick={(e) => e.stopPropagation()}>
         <div className="settings-header">
           {/* 在移动端且不在菜单列表时，显示返回按钮 */}

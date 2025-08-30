@@ -181,7 +181,10 @@
 }
 
 .close-btn:hover {
-  background: #e2e8f0;
-  color: #475569;
+  background: #ffffff;
+  color: #334155;
   transform: rotate(90deg);
+  /* 发光光晕阴影特效 */
+  box-shadow: 
+    0 0 12px rgba(59, 130, 246, 0.6);
 }

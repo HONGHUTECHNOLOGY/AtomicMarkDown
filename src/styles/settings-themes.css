@@ -25,14 +25,14 @@
 }
 
 .dark .settings-modal {
-  background: #0f172a;
+  background: #050505;
   color: #e2e8f0;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .dark .settings-header {
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  border-bottom-color: #334155;
+  background: linear-gradient(135deg, #0a0a0a 0%, #050505 100%);
+  border-bottom-color: #484848;
 }
 
 .dark .settings-header h2 {
@@ -40,18 +40,21 @@
 }
 
 .dark .close-btn {
-  background: #1e293b;
-  color: #94a3b8;
+  background: #2a2a2a;
+  color: #cccccc;
 }
 
 .dark .close-btn:hover {
-  background: #334155;
-  color: #e2e8f0;
+  background: #4a4a4a;
+  color: #ffffff;
+  /* 发光光晕阴影特效 - 白色光晕 */
+  box-shadow: 
+    0 0 12px rgba(255, 255, 255, 0.6);
 }
 
 .dark .settings-sidebar {
-  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-  border-right-color: #334155;
+  background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
+  border-right-color: #2a2a2a;
 }
 
 .dark .menu-item {
@@ -59,26 +62,34 @@
 }
 
 .dark .menu-item:hover {
-  background-color: rgba(59, 130, 246, 0.2);
-  color: #f1f5f9;
+  background-color: rgba(255, 255, 255, 0.16);
+  color: #f8fafc;
+  /* 发光光晕阴影特效 - 白色光晕 */
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.3),
+    0 0 16px rgba(255, 255, 255, 0.6);
 }
 
 .dark .menu-item.active {
-  background-color: rgba(59, 130, 246, 0.25);
-  color: #60a5fa;
+  background-color: rgba(255, 255, 255, 0.365);
+  color: #ffffff;
+  /* 发光光晕阴影特效 - 白色光晕 */
+  box-shadow: 
+    0 2px 8px rgba(255, 255, 255, 0.2),
+    0 0 16px rgba(255, 255, 255, 0.683);
 }
 
 .dark .settings-content {
-  background: #0f172a;
+  background: #2a2a2a;
 }
 
 .dark .setting-item {
-  background: #1e293b;
-  border-color: #334155;
+  background: #0a0a0a;
+  border-color: #1a1a1a;
 }
 
 .dark .setting-item:hover {
-  background: #334155;
+  background: #1a1a1a;
 }
 
 .dark .setting-item label {
@@ -86,22 +97,22 @@
 }
 
 .dark .setting-item select {
-  background: #1e293b;
-  color: #e2e8f0;
-  border-color: #334155;
+  background: #2a2a2a;
+  color: #e6e6e6;
+  border-color: #3a3a3a;
 }
 
 .dark .setting-item select:hover {
-  border-color: #60a5fa;
+  border-color: #cccccc;
 }
 
 .dark .setting-item select:focus {
-  border-color: #60a5fa;
+  border-color: #cccccc;
 }
 
 .dark .setting-item select option {
-  background: #1e293b;
-  color: #e2e8f0;
+  background: #2a2a2a;
+  color: #e6e6e6;
 }
 
 .dark .setting-description {
@@ -113,7 +124,7 @@
 }
 
 .dark .version {
-  color: #60a5fa;
+  color: #cccccc;
 }
 
 .dark .about-content {
@@ -129,15 +140,15 @@
 }
 
 .dark .about-content a {
-  color: #93c5fd; /* 链接使用更亮的蓝色 */
+  color: #cccccc; /* 链接使用灰色 */
 }
 
 .dark .about-content a:hover {
-  color: #bfdbfe; /* 悬停时使用更亮的蓝色 */
+  color: #ffffff; /* 悬停时使用白色 */
 }
 
 .dark .about-content .version-info {
-  background: #1e293b; /* 保持背景色不变 */
+  background: #0a0a0a; /* 更深的黑色背景 */
   color: #e2e8f0; /* 文字颜色更亮 */
 }
 
@@ -146,19 +157,19 @@
 }
 
 .dark .about-content .feature-list li::before {
-  color: #93c5fd; /* 列表项标记使用更亮的蓝色 */
+  color: #cccccc; /* 列表项标记使用灰色 */
 }
 
 .dark .settings-content::-webkit-scrollbar-track {
-  background: #1e293b;
+  background: #1a1a1a;
 }
 
 .dark .settings-content::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #3a3a3a;
 }
 
 .dark .settings-content::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #4a4a4a;
 }
 
 /* 蓝色主题适配 */
@@ -182,11 +193,19 @@
 .blue .menu-item:hover {
   background-color: rgba(100, 181, 246, 0.2);
   color: #0d47a1;
+  /* 发光光晕阴影特效 */
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.15),
+    0 0 16px rgba(33, 150, 243, 0.4);
 }
 
 .blue .menu-item.active {
   background-color: rgba(100, 181, 246, 0.3);
   color: #0d47a1;
+  /* 发光光晕阴影特效 */
+  box-shadow: 
+    0 2px 8px rgba(100, 181, 246, 0.1),
+    0 0 16px rgba(33, 150, 243, 0.4);
 }
 
 .blue .close-btn {
@@ -195,8 +214,11 @@
 }
 
 .blue .close-btn:hover {
-  background: rgba(165, 200, 255, 0.9);
+  background: rgba(220, 235, 255, 1);
   color: #0d47a1;
+  /* 发光光晕阴影特效 - 蓝色光晕 */
+  box-shadow: 
+    0 0 12px rgba(33, 150, 243, 0.6);
 }
 
 .blue .settings-content {
@@ -237,11 +259,19 @@
 .green .menu-item:hover {
   background-color: rgba(76, 175, 80, 0.2);
   color: #1b5e20;
+  /* 发光光晕阴影特效 */
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.15),
+    0 0 16px rgba(76, 175, 80, 0.4);
 }
 
 .green .menu-item.active {
   background-color: rgba(76, 175, 80, 0.3);
   color: #1b5e20;
+  /* 发光光晕阴影特效 */
+  box-shadow: 
+    0 2px 8px rgba(76, 175, 80, 0.1),
+    0 0 16px rgba(76, 175, 80, 0.4);
 }
 
 .green .close-btn {
@@ -250,7 +280,10 @@
 }
 
 .green .close-btn:hover {
-  background: rgba(165, 214, 167, 0.9);
+  background: rgba(220, 250, 220, 1);
+  /* 发光光晕阴影特效 - 绿色光晕 */
+  box-shadow: 
+    0 0 12px rgba(76, 175, 80, 0.6);
 }
 
 .green .settings-content {
@@ -291,11 +324,19 @@
 .purple .menu-item:hover {
   background-color: rgba(156, 39, 176, 0.2);
   color: #4a148c;
+  /* 发光光晕阴影特效 */
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.15),
+    0 0 16px rgba(156, 39, 176, 0.4);
 }
 
 .purple .menu-item.active {
   background-color: rgba(156, 39, 176, 0.3);
   color: #4a148c;
+  /* 发光光晕阴影特效 */
+  box-shadow: 
+    0 2px 8px rgba(156, 39, 176, 0.1),
+    0 0 16px rgba(156, 39, 176, 0.4);
 }
 
 .purple .close-btn {
@@ -304,7 +345,10 @@
 }
 
 .purple .close-btn:hover {
-  background: rgba(230, 215, 255, 0.9);
+  background: rgba(250, 240, 255, 1);
+  /* 发光光晕阴影特效 - 紫色光晕 */
+  box-shadow: 
+    0 0 12px rgba(156, 39, 176, 0.6);
 }
 
 .purple .settings-content {
@@ -338,15 +382,15 @@
 }
 
 .dark .about-content a {
-  color: #93c5fd; /* 链接使用更亮的蓝色 */
+  color: #cccccc; /* 链接使用灰色 */
 }
 
 .dark .about-content a:hover {
-  color: #bfdbfe; /* 悬停时使用更亮的蓝色 */
+  color: #ffffff; /* 悬停时使用白色 */
 }
 
 .dark .about-content .version-info {
-  background: #1e293b; /* 保持背景色不变 */
+  background: #3f3f3f; /* 改为黑灰色调 */
   color: #e2e8f0; /* 文字颜色更亮 */
 }
 
@@ -355,7 +399,7 @@
 }
 
 .dark .about-content .feature-list li::before {
-  color: #93c5fd; /* 列表项标记使用更亮的蓝色 */
+  color: #cccccc; /* 列表项标记使用灰色 */
 }
 
 /* 深色模式的补充样式 */
@@ -373,13 +417,16 @@
 
 /* 深色主题适配 */
 .dark .back-btn {
-  background: #1e293b;
-  color: #94a3b8;
+  background: #2a2a2a;
+  color: #cccccc;
 }
 
 .dark .back-btn:hover {
-  background: #334155;
-  color: #e2e8f0;
+  background: #4a4a4a;
+  color: #ffffff;
+  /* 发光光晕阴影特效 - 白色光晕 */
+  box-shadow: 
+    0 0 12px rgba(255, 255, 255, 0.6);
 }
 
 /* 蓝色主题适配 */
@@ -389,8 +436,11 @@
 }
 
 .blue .back-btn:hover {
-  background: rgba(165, 200, 255, 0.9);
+  background: rgba(220, 235, 255, 1);
   color: #0d47a1;
+  /* 发光光晕阴影特效 - 蓝色光晕 */
+  box-shadow: 
+    0 0 12px rgba(33, 150, 243, 0.6);
 }
 
 /* 绿色主题适配 */
@@ -400,7 +450,10 @@
 }
 
 .green .back-btn:hover {
-  background: rgba(165, 214, 167, 0.9);
+  background: rgba(220, 250, 220, 1);
+  /* 发光光晕阴影特效 - 绿色光晕 */
+  box-shadow: 
+    0 0 12px rgba(76, 175, 80, 0.6);
 }
 
 /* 紫色主题适配 */
@@ -410,5 +463,8 @@
 }
 
 .purple .back-btn:hover {
-  background: rgba(230, 215, 255, 0.9);
+  background: rgba(250, 240, 255, 1);
+  /* 发光光晕阴影特效 - 紫色光晕 */
+  box-shadow: 
+    0 0 12px rgba(156, 39, 176, 0.6);
 }
