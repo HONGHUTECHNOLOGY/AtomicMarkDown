@@ -150,28 +150,28 @@
 
 /* 绿色主题表格样式 */
 .green .preview table {
-  background-color: #e8f5e8;
-  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+  background-color: #f0f9f0;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.25);
 }
 
 .green .preview th,
 .green .preview td {
-  border-color: rgba(76, 175, 80, 0.2);
-  color: #2e7d32;
+  border-color: rgba(76, 175, 80, 0.25);
+  color: #388e3c;
 }
 
 .green .preview th {
-  background-color: #c8e6c9;
-  color: #1b5e20;
-  border-bottom: 2px solid rgba(76, 175, 80, 0.3);
+  background-color: #d7eed8;
+  color: #2e7d32;
+  border-bottom: 2px solid rgba(76, 175, 80, 0.35);
 }
 
 .green .preview tr:nth-child(even) {
-  background-color: rgba(200, 230, 201, 0.5);
+  background-color: rgba(215, 238, 216, 0.6);
 }
 
 .green .preview tr:hover {
-  background-color: rgba(200, 230, 201, 0.7);
+  background-color: rgba(215, 238, 216, 0.8);
 }
 
 /* 紫色主题表格样式 */

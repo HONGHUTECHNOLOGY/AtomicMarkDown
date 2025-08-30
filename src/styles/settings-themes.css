@@ -25,14 +25,14 @@
 }
 
 .dark .settings-modal {
-  background: #0f172a;
+  background: #050505;
   color: #e2e8f0;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .dark .settings-header {
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  border-bottom-color: #334155;
+  background: linear-gradient(135deg, #0a0a0a 0%, #050505 100%);
+  border-bottom-color: #1a1a1a;
 }
 
 .dark .settings-header h2 {
@@ -50,8 +50,8 @@
 }
 
 .dark .settings-sidebar {
-  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-  border-right-color: #334155;
+  background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%);
+  border-right-color: #1a1a1a;
 }
 
 .dark .menu-item {
@@ -77,16 +77,16 @@
 }
 
 .dark .settings-content {
-  background: #0f172a;
+  background: #1a1a1a;
 }
 
 .dark .setting-item {
-  background: #1e293b;
-  border-color: #334155;
+  background: #0a0a0a;
+  border-color: #1a1a1a;
 }
 
 .dark .setting-item:hover {
-  background: #334155;
+  background: #1a1a1a;
 }
 
 .dark .setting-item label {
@@ -145,7 +145,7 @@
 }
 
 .dark .about-content .version-info {
-  background: #1e293b; /* 保持背景色不变 */
+  background: #0a0a0a; /* 更深的黑色背景 */
   color: #e2e8f0; /* 文字颜色更亮 */
 }
 
@@ -158,7 +158,7 @@
 }
 
 .dark .settings-content::-webkit-scrollbar-track {
-  background: #1e293b;
+  background: #0a0a0a;
 }
 
 .dark .settings-content::-webkit-scrollbar-thumb {

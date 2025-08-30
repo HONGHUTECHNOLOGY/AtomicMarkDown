@@ -85,16 +85,45 @@
   padding: 12px 16px;
   color: #333;
   text-decoration: none;
-  transition: background-color 0.1s ease, color 0.1s ease;
+  transition: all 0.3s ease;
   font-size: 14px;
   font-weight: 400;
   border: none;
   outline: none;
+  position: relative;
+  overflow: hidden;
 }
 
 .export-dropdown li a:hover {
   background-color: rgba(0, 0, 0, 0.04);
   color: #667eea;
+  box-shadow: 0 0 16px rgba(102, 126, 234, 0.4);
+  transform: translateY(-1px);
+}
+
+.export-dropdown li a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.export-dropdown li a:hover::before {
+  opacity: 1;
+  animation: shimmer 2s ease-in-out infinite;
 }
 
 /* 主题适配 - 导出按钮 */
@@ -202,7 +231,8 @@
 
 .dark .export-dropdown li a:hover {
   background-color: rgba(255, 255, 255, 0.05);
-  color: #90caf9;
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.3);
 }
 
 .blue .export-dropdown {
@@ -222,6 +252,8 @@
 .blue .export-dropdown li a:hover {
   background-color: rgba(33, 149, 243, 0.062); /* 使用更明显的蓝色悬浮背景 */
   color: #0c7edcda;
+  box-shadow: 0 0 16px rgba(33, 150, 243, 0.4);
+
 }
 
 .purple .export-dropdown {
@@ -241,6 +273,7 @@
 .purple .export-dropdown li a:hover {
   background-color: rgba(156, 39, 176, 0.05);
   color: #9c27b0;
+  box-shadow: 0 0 16px rgba(156, 39, 176, 0.4);
 }
 
 .green .export-dropdown {
@@ -260,4 +293,5 @@
 .green .export-dropdown li a:hover {
   background-color: rgba(76, 175, 80, 0.05);
   color: #4caf50;
+  box-shadow: 0 0 16px rgba(76, 175, 80, 0.4);
 }
