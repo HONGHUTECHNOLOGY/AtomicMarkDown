@@ -17,7 +17,7 @@ import { isScrollProcessing, setScrollProcessing, safeScrollSync } from './utils
 export const defaultSettings = {
   autoSave: true,
   showLineNumbers: false,
-  syncScroll: true, // 修改默认值为true，使同步滚动默认开启
+  syncScroll: false, // 修改默认值为false，使同步滚动默认关闭
   fontSize: '14',
   enableMermaid: true,
   enableCodeHighlight: true,
@@ -135,6 +135,63 @@ function App() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // 添加鼠标移动监听器来实现光晕效果
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const editorContainer = document.querySelector('.editor-container');
+      if (!editorContainer) return;
+      
+      // 获取鼠标在编辑器容器内的位置
+      const rect = editorContainer.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+      
+      // 检查鼠标是否在编辑器容器内
+      const isInside = mouseX >= 0 && mouseX <= rect.width && 
+                     mouseY >= 0 && mouseY <= rect.height;
+      
+      // 更新光晕位置
+      const glowElement = document.querySelector('.mouse-glow');
+      if (glowElement) {
+        if (isInside) {
+          glowElement.style.left = mouseX + 'px';
+          glowElement.style.top = mouseY + 'px';
+          glowElement.classList.add('visible');
+        } else {
+          glowElement.classList.remove('visible');
+        }
+      }
+    };
+
+    // 创建光晕元素
+    const createGlowElement = () => {
+      const glowElement = document.createElement('div');
+      glowElement.className = 'mouse-glow';
+      
+      // 使用CSS中定义的光晕样式，不再硬编码背景
+      // 背景样式现在完全由CSS控制
+      
+      const editorContainer = document.querySelector('.editor-container');
+      if (editorContainer) {
+        editorContainer.appendChild(glowElement);
+      }
+    };
+
+    // 初始化光晕元素
+    createGlowElement();
+    
+    // 添加鼠标移动事件监听
+    document.addEventListener('mousemove', handleMouseMove);
+    
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      const glowElement = document.querySelector('.mouse-glow');
+      if (glowElement) {
+        glowElement.remove();
+      }
+    };
+  }, [theme]); // 依赖theme，当主题变化时重新创建光晕元素
   
   // 处理滚动同步 - 改进的防循环触发机制
   const handleScroll = ({ scrollTop, scrollHeight, height, source }) => {

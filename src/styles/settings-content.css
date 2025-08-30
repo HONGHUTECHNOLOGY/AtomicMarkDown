@@ -392,16 +392,18 @@
 
 /* 深色模式下的菜单网格项 */
 .dark .menu-grid-item {
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  border: 1px solid #334155;
-  color: #e2e8f0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #333333 0%, #222222 100%);
+  border: 1px solid #444444;
+  color: #cccccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .dark .menu-grid-item:hover {
-  background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+  background: linear-gradient(135deg, #444444 0%, #333333 100%);
   background-position: 100% 100%;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(255, 255, 255, 0.5);
   filter: brightness(1.1);
 }
 
@@ -415,9 +417,9 @@
   }
   
   .dark .menu-grid-item:active {
-    background: linear-gradient(135deg, #334155 0%, #1e293b 100%) !important;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
-  }
+  background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4) !important;
+}
   
   .blue .menu-grid-item:active {
     background: linear-gradient(135deg, #90caf9 0%, #64b5f6 100%) !important;

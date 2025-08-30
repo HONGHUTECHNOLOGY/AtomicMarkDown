@@ -374,7 +374,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings, theme }) => {
       <div className="about-content">
         <div className="about-header">
           <h4>原子Markdown编辑器</h4>
-          <p className="version">版本 1.3.2</p>
+          <p className="version">版本 1.3.5</p>
         </div>
         
         <div className="version-info">
@@ -386,7 +386,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings, theme }) => {
             <li>代码高亮</li>
             <li>KateX(LateX)数学公式渲染</li>
             <li>多种格式导出</li>
-            <li>自动保存功能</li>
+            <li>同步滚动功能</li>
           </ul>
         </div>
         
@@ -395,7 +395,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings, theme }) => {
             <strong>开发者：</strong>鸿鹄科技
           </p>
           <p>
-            <strong>技术栈：</strong>React 19 + Monaco Editor + Mermaid
+            <strong>技术栈：</strong>React 19 + Monaco Editor + Mermaid + KateX
           </p>
           <p>
             <a href="https://gitee.com/honghutechnology/AtomicMarkDown" 
