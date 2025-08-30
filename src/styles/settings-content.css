@@ -294,8 +294,42 @@
   background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
   background-position: 100% 100%;
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
-  filter: brightness(1.05);
+  /* 发光光晕阴影特效 */
+  box-shadow: 
+    0 12px 32px rgba(0, 0, 0, 0.15),
+    0 0 20px rgba(102, 126, 234, 0.5);
+  filter: brightness(1.1);
+}
+
+/* 主题色适配的发光光晕阴影 */
+.light .menu-grid-item:hover {
+  box-shadow: 
+    0 12px 32px rgba(0, 0, 0, 0.15),
+    0 0 20px rgba(102, 126, 234, 0.5);
+}
+
+.dark .menu-grid-item:hover {
+  box-shadow: 
+    0 12px 32px rgba(0, 0, 0, 0.15),
+    0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.blue .menu-grid-item:hover {
+  box-shadow: 
+    0 12px 32px rgba(0, 0, 0, 0.15),
+    0 0 20px rgba(33, 150, 243, 0.5);
+}
+
+.green .menu-grid-item:hover {
+  box-shadow: 
+    0 12px 32px rgba(0, 0, 0, 0.15),
+    0 0 20px rgba(76, 175, 80, 0.5);
+}
+
+.purple .menu-grid-item:hover {
+  box-shadow: 
+    0 12px 32px rgba(0, 0, 0, 0.15),
+    0 0 20px rgba(156, 39, 176, 0.5);
 }
 
 .menu-grid-item:active {

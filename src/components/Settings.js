@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../styles/Settings.css';
 import { defaultSettings } from '../App'; // 从App.js导入默认设置
 
-const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
+const Settings = ({ isOpen, onClose, settings, updateSettings, theme }) => {
   const [activeMenu, setActiveMenu] = useState('basic');
   const [isVisible, setIsVisible] = useState(false);
   const [showAnimation, setShowAnimation] = useState(false);
@@ -443,7 +443,7 @@ const Settings = ({ isOpen, onClose, settings, updateSettings }) => {
   
   // 修改返回的JSX
   return (
-    <div className={`settings-overlay ${isOpen ? 'open' : 'closing'}`} onClick={onClose}>
+    <div className={`settings-overlay ${isOpen ? 'open' : 'closing'} ${theme}`} onClick={onClose}>
       <div className="settings-modal" onClick={(e) => e.stopPropagation()}>
         <div className="settings-header">
           {/* 在移动端且不在菜单列表时，显示返回按钮 */}

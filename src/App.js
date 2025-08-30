@@ -287,6 +287,7 @@ function App() {
         onClose={() => setShowSettings(false)} 
         settings={settings}
         updateSettings={updateSettings}
+        theme={theme}
       />
     </div>
   );

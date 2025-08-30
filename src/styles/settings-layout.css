@@ -66,13 +66,19 @@
   background-color: rgba(59, 130, 246, 0.1);
   color: #1e293b;
   transform: translateX(4px); /* 增加位移幅度 */
+  /* 发光光晕阴影特效 */
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.12),
+    0 0 16px rgba(102, 126, 234, 0.4);
 }
 
 .menu-item.active {
   background-color: rgba(59, 130, 246, 0.15);
   color: #3b82f6;
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+  box-shadow: 
+    0 2px 8px rgba(59, 130, 246, 0.1),
+    0 0 16px rgba(102, 126, 234, 0.4);
   transform: translateX(4px);
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1); /* 选中状态使用更慢的动画 */
 }

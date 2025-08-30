@@ -59,13 +59,21 @@
 }
 
 .dark .menu-item:hover {
-  background-color: rgba(59, 130, 246, 0.2);
-  color: #f1f5f9;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  /* 发光光晕阴影特效 - 白色光晕 */
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.3),
+    0 0 16px rgba(255, 255, 255, 0.4);
 }
 
 .dark .menu-item.active {
-  background-color: rgba(59, 130, 246, 0.25);
-  color: #60a5fa;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  /* 发光光晕阴影特效 - 白色光晕 */
+  box-shadow: 
+    0 2px 8px rgba(255, 255, 255, 0.1),
+    0 0 16px rgba(255, 255, 255, 0.4);
 }
 
 .dark .settings-content {
@@ -92,11 +100,11 @@
 }
 
 .dark .setting-item select:hover {
-  border-color: #60a5fa;
+  border-color: #cccccc;
 }
 
 .dark .setting-item select:focus {
-  border-color: #60a5fa;
+  border-color: #cccccc;
 }
 
 .dark .setting-item select option {
@@ -113,7 +121,7 @@
 }
 
 .dark .version {
-  color: #60a5fa;
+  color: #cccccc;
 }
 
 .dark .about-content {
@@ -129,11 +137,11 @@
 }
 
 .dark .about-content a {
-  color: #93c5fd; /* 链接使用更亮的蓝色 */
+  color: #cccccc; /* 链接使用灰色 */
 }
 
 .dark .about-content a:hover {
-  color: #bfdbfe; /* 悬停时使用更亮的蓝色 */
+  color: #ffffff; /* 悬停时使用白色 */
 }
 
 .dark .about-content .version-info {
@@ -146,7 +154,7 @@
 }
 
 .dark .about-content .feature-list li::before {
-  color: #93c5fd; /* 列表项标记使用更亮的蓝色 */
+  color: #cccccc; /* 列表项标记使用灰色 */
 }
 
 .dark .settings-content::-webkit-scrollbar-track {
@@ -182,11 +190,19 @@
 .blue .menu-item:hover {
   background-color: rgba(100, 181, 246, 0.2);
   color: #0d47a1;
+  /* 发光光晕阴影特效 */
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.15),
+    0 0 16px rgba(33, 150, 243, 0.4);
 }
 
 .blue .menu-item.active {
   background-color: rgba(100, 181, 246, 0.3);
   color: #0d47a1;
+  /* 发光光晕阴影特效 */
+  box-shadow: 
+    0 2px 8px rgba(100, 181, 246, 0.1),
+    0 0 16px rgba(33, 150, 243, 0.4);
 }
 
 .blue .close-btn {
@@ -237,11 +253,19 @@
 .green .menu-item:hover {
   background-color: rgba(76, 175, 80, 0.2);
   color: #1b5e20;
+  /* 发光光晕阴影特效 */
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.15),
+    0 0 16px rgba(76, 175, 80, 0.4);
 }
 
 .green .menu-item.active {
   background-color: rgba(76, 175, 80, 0.3);
   color: #1b5e20;
+  /* 发光光晕阴影特效 */
+  box-shadow: 
+    0 2px 8px rgba(76, 175, 80, 0.1),
+    0 0 16px rgba(76, 175, 80, 0.4);
 }
 
 .green .close-btn {
@@ -291,11 +315,19 @@
 .purple .menu-item:hover {
   background-color: rgba(156, 39, 176, 0.2);
   color: #4a148c;
+  /* 发光光晕阴影特效 */
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.15),
+    0 0 16px rgba(156, 39, 176, 0.4);
 }
 
 .purple .menu-item.active {
   background-color: rgba(156, 39, 176, 0.3);
   color: #4a148c;
+  /* 发光光晕阴影特效 */
+  box-shadow: 
+    0 2px 8px rgba(156, 39, 176, 0.1),
+    0 0 16px rgba(156, 39, 176, 0.4);
 }
 
 .purple .close-btn {

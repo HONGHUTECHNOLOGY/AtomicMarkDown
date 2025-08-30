@@ -278,6 +278,73 @@ h1 {
   background-color: rgba(220, 220, 220, 0.9);
   transform: translateY(-2px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* 发光光晕阴影特效 - 主题色适配 */
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    0 0 15px rgba(102, 126, 234, 0.4);
+  filter: brightness(1.1);
+}
+
+/* 主题色适配的发光光晕阴影 */
+.light .toolbar-content button:hover {
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    0 0 15px rgba(102, 126, 234, 0.4);
+}
+
+.dark .toolbar-content button:hover {
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+.blue .toolbar-content button:hover {
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    0 0 15px rgba(33, 150, 243, 0.4);
+}
+
+.green .toolbar-content button:hover {
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    0 0 15px rgba(76, 175, 80, 0.4);
+}
+
+.purple .toolbar-content button:hover {
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    0 0 15px rgba(156, 39, 176, 0.4);
+}
+
+/* 工具栏按钮微光效果 */
+.toolbar-content button {
+  position: relative;
+  overflow: hidden;
+}
+
+.toolbar-content button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  border-radius: 6px;
+}
+
+.toolbar-content button:hover::before {
+  opacity: 1;
+  animation: shimmer 1.5s ease-in-out infinite;
 }
 
 /* 滚动条样式 */
