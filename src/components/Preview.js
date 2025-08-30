@@ -72,11 +72,15 @@ export const Preview = forwardRef(({ markdown, theme, settings, onScroll }, ref)
           name: 'inlineMath',
           level: 'inline',
           start(src) {
-            return src.indexOf('$') !== -1 || src.indexOf('\\[') !== -1;
+            const dollarIndex = src.indexOf('$');
+            const bracketIndex = src.indexOf('\\[');
+            const parenIndex = src.indexOf('\\(');
+            const indices = [dollarIndex, bracketIndex, parenIndex].filter(index => index !== -1);
+            return indices.length > 0 ? Math.min(...indices) : -1;
           },
           tokenizer(src) {
-            // 匹配$...$格式
-            const dollarRule = /^\$(.+?)\$/;
+            // 匹配$...$格式 - 使用^锚点确保从字符串开头匹配，避免重复
+            const dollarRule = /^\$([^$]+)\$/;
             const dollarMatch = dollarRule.exec(src);
             if (dollarMatch) {
               return {
@@ -87,8 +91,8 @@ export const Preview = forwardRef(({ markdown, theme, settings, onScroll }, ref)
               };
             }
             
-            // 匹配\[...\]格式
-            const bracketRule = /^\\\[(.+?)\\\]/;
+            // 匹配\[...\]格式 - 使用^锚点确保从字符串开头匹配，避免重复
+            const bracketRule = /^\\\[([^\]]+)\\\]/;
             const bracketMatch = bracketRule.exec(src);
             if (bracketMatch) {
               return {
@@ -96,6 +100,18 @@ export const Preview = forwardRef(({ markdown, theme, settings, onScroll }, ref)
                 raw: bracketMatch[0],
                 text: bracketMatch[1]?.trim(),
                 format: 'bracket'
+              };
+            }
+            
+            // 匹配\(...\)格式 - 支持LaTeX标准的行内公式格式
+            const parenRule = /^\\\((.+?)\\\)/;
+            const parenMatch = parenRule.exec(src);
+            if (parenMatch) {
+              return {
+                type: 'inlineMath',
+                raw: parenMatch[0],
+                text: parenMatch[1]?.trim(),
+                format: 'paren'
               };
             }
           },
