@@ -1,0 +1,240 @@
+/* preview-styles.css - 预览区域样式 */
+
+/* 预览区域的h1标题样式 */
+.preview h1 {
+  margin: 1.5rem 0 1rem 0;
+  font-size: 2rem;
+  font-weight: bold; /* 修改为bold，使其与其他标题一致 */
+  color: inherit;
+  line-height: 1.2;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* 确保h1标题在不同主题下的一致性 */
+.dark .preview h1,
+.blue .preview h1,
+.green .preview h1,
+.purple .preview h1 {
+  color: inherit;
+}
+
+/* 添加在文件末尾 */
+
+/* Markdown引用样式 */
+.preview blockquote {
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  border-left: 4px solid #ccc;
+  background-color: rgba(0, 0, 0, 0.03);
+  color: #666;
+  font-style: italic;
+}
+
+.preview blockquote p {
+  margin: 0.5rem 0;
+}
+
+.preview blockquote p:first-child {
+  margin-top: 0;
+}
+
+.preview blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* Markdown表格样式 - 基础样式 */
+.preview table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  margin: 1rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.preview th,
+.preview td {
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.preview th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #495057;
+}
+
+.preview tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.preview tr:hover {
+  background-color: #e9ecef;
+}
+
+/* 主题色适配 - 亮色主题 */
+.light .preview table {
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.light .preview th {
+  background-color: #f1f3f5;
+  color: #495057;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.light .preview tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.light .preview tr:hover {
+  background-color: #e9ecef;
+}
+
+/* 暗色主题表格样式 */
+.dark .preview table {
+  background-color: #1a1a1a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.dark .preview th,
+.dark .preview td {
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+}
+
+.dark .preview th {
+  background-color: #2d2d2d;
+  color: #cccccc;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .preview tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.dark .preview tr:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* 蓝色主题表格样式 */
+.blue .preview table {
+  background-color: #e3f2fd;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
+}
+
+.blue .preview th,
+.blue .preview td {
+  border-color: rgba(33, 150, 243, 0.2);
+  color: #1565c0;
+}
+
+.blue .preview th {
+  background-color: #bbdefb;
+  color: #0d47a1;
+  border-bottom: 2px solid rgba(33, 150, 243, 0.3);
+}
+
+.blue .preview tr:nth-child(even) {
+  background-color: rgba(187, 222, 251, 0.5);
+}
+
+.blue .preview tr:hover {
+  background-color: rgba(187, 222, 251, 0.7);
+}
+
+/* 绿色主题表格样式 */
+.green .preview table {
+  background-color: #f0f9f0;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.25);
+}
+
+.green .preview th,
+.green .preview td {
+  border-color: rgba(76, 175, 80, 0.25);
+  color: #388e3c;
+}
+
+.green .preview th {
+  background-color: #d7eed8;
+  color: #2e7d32;
+  border-bottom: 2px solid rgba(76, 175, 80, 0.35);
+}
+
+.green .preview tr:nth-child(even) {
+  background-color: rgba(215, 238, 216, 0.6);
+}
+
+.green .preview tr:hover {
+  background-color: rgba(215, 238, 216, 0.8);
+}
+
+/* 紫色主题表格样式 */
+.purple .preview table {
+  background-color: #f3e5f5;
+  box-shadow: 0 2px 8px rgba(156, 39, 176, 0.2);
+}
+
+.purple .preview th,
+.purple .preview td {
+  border-color: rgba(156, 39, 176, 0.2);
+  color: #6a1b9a;
+}
+
+.purple .preview th {
+  background-color: #e1bee7;
+  color: #4a148c;
+  border-bottom: 2px solid rgba(156, 39, 176, 0.3);
+}
+
+.purple .preview tr:nth-child(even) {
+  background-color: rgba(225, 190, 231, 0.5);
+}
+
+.purple .preview tr:hover {
+  background-color: rgba(225, 190, 231, 0.7);
+}
+
+/* 表格单元格微光效果 - 增强版 */
+.preview td {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.preview td::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.preview td:hover::before {
+  opacity: 1;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+/* 增强悬停效果 */
+.preview td:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 2;
+}

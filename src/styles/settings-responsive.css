@@ -1,0 +1,120 @@
+/* settings-responsive.css - 响应式设计 */
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .settings-modal {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    border-radius: 0;
+  }
+  
+  .settings-sidebar {
+    width: 180px;
+  }
+  
+  .settings-content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .settings-body {
+    flex-direction: column;
+  }
+  
+  .settings-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 1rem;
+  }
+  
+  .menu-item {
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* 移动端菜单列表样式 */
+@media (max-width: 768px) {
+  .settings-modal {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    border-radius: 0;
+    animation: slideInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  
+  .settings-header {
+    padding: 1rem 1.5rem;
+    animation: fadeInDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+  }
+  
+  .settings-body {
+    flex-direction: column;
+    animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+  }
+  
+  .settings-content {
+    padding: 1rem;
+    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+  }
+  
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  /* 移动端菜单项逐个弹出动画 */
+  .menu-grid-item {
+    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  
+  .menu-grid-item:nth-child(1) { animation-delay: 0.1s; }
+  .menu-grid-item:nth-child(2) { animation-delay: 0.2s; }
+  .menu-grid-item:nth-child(3) { animation-delay: 0.3s; }
+  .menu-grid-item:nth-child(4) { animation-delay: 0.4s; }
+  .menu-grid-item:nth-child(5) { animation-delay: 0.5s; }
+  .menu-grid-item:nth-child(6) { animation-delay: 0.6s; }
+  
+  /* 当显示菜单列表时，调整内容区域样式 */
+  .settings-content.menu-list-view {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+}
+
+/* 小屏幕设备进一步调整 */
+@media (max-width: 480px) {
+  .menu-grid-item {
+    padding: 1.5rem 1rem;
+  }
+  
+  .menu-grid-icon {
+    font-size: 1.75rem;
+    width: 45px;
+    height: 45px;
+  }
+  
+  .menu-grid-text {
+    font-size: 0.9375rem;
+  }
+}
+
+/* 超小屏幕设备调整 */
+@media (max-width: 360px) {
+  .menu-grid-item {
+    padding: 1.25rem 0.75rem;
+  }
+  
+  .menu-grid-icon {
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .menu-grid-text {
+    font-size: 0.875rem;
+  }
+}

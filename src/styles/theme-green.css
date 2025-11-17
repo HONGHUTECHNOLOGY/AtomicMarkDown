@@ -1,0 +1,95 @@
+/* theme-green.css - 绿色主题 */
+.app.green {
+  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+}
+
+.green .header {
+  background-color: rgba(240, 255, 240, 0.9);
+  border-bottom: 1px solid rgba(76, 175, 80, 0.2);
+}
+
+.green h1 {
+  color: #2e7d32;
+}
+
+.green .editor-container {
+  background-color: transparent;
+  box-shadow: 0 4px 20px rgba(76, 175, 80, 0.15);
+}
+
+.green .editor {
+  background-color: rgba(248, 255, 248, 0.95) !important;
+  border-right: 1px solid rgba(76, 175, 80, 0.2);
+  color: #2e7d32;
+}
+
+.green .preview {
+  background-color: rgba(248, 255, 248, 0.95);
+  color: #2e7d32;
+}
+
+.green .toolbar {
+  background-color: rgba(240, 255, 240, 0.9);
+  border-bottom: 1px solid rgba(76, 175, 80, 0.2);
+}
+
+.green .toolbar button {
+  background-color: rgba(200, 255, 200, 0.8);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  color: #1b5e20;
+}
+
+.green .toolbar button:hover {
+  background-color: rgba(165, 214, 167, 0.9);
+  border-color: rgba(76, 175, 80, 0.5);
+}
+
+.green .theme-btn {
+  background-color: rgba(200, 255, 200, 0.3);
+}
+
+.green .theme-btn.active {
+  background-color: rgba(76, 175, 80, 0.3);
+}
+
+.green ::-webkit-scrollbar-track {
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.green ::-webkit-scrollbar-thumb {
+  background: rgba(76, 175, 80, 0.3);
+}
+
+.green ::-webkit-scrollbar-thumb:hover {
+  background: rgba(76, 175, 80, 0.5);
+}
+
+
+.green .toolbar-show-button {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.7), rgba(56, 155, 60, 0.7));
+  color: white;
+  border: none;
+}
+
+.green .toolbar-show-button:hover {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.8), rgba(56, 155, 60, 0.8));
+}
+
+.green .editor code,
+.green .preview code {
+  background-color: rgba(200, 255, 200, 0.3);
+  color: #2e7d32;
+}
+
+.green .editor pre,
+.green .preview pre {
+  background-color: rgba(200, 255, 200, 0.2);
+  border: 1px solid rgba(76, 175, 80, 0.2);
+}
+
+/* 绿色主题引用样式 */
+.green .preview blockquote {
+  border-left: 4px solid #81c784;
+  background-color: rgba(129, 199, 132, 0.1);
+  color: #2e7d32;
+}
